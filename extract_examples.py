@@ -32,7 +32,7 @@ def main() -> None:
     en_start = text.find('<div class="locale" data-locale="en">')
     OUT.mkdir(exist_ok=True)
     for old in OUT.glob("*.py"):
-        if old.name != "stubs.py":       # заглушки сопровождаются вручную
+        if old.name != "stubs.py":       # the stubs are maintained by hand
             old.unlink()
 
     counters: dict[str, int] = {}

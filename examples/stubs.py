@@ -337,7 +337,7 @@ class SourceUnavailable(RagError):
 
 class SourceError(RagError):
     def __init__(self, source: str, cause: BaseException) -> None:
-        super().__init__(f"источник {source} отказал: {cause}")
+        super().__init__(f"source {source} failed: {cause}")
         self.source = source
 
 
@@ -355,7 +355,7 @@ class OutputContractError(RagError):
 
 DECAY: float = 0.8
 THRESHOLD: float = 0.7
-HYDE_PROMPT: str = "Напишите правдоподобный ответ на вопрос: {question}"
+HYDE_PROMPT: str = "Write a plausible answer to the question: {question}"
 SENTINEL: str = "\x00"
 SAMPLE_CORPUS: dict[str, str] = {}
 PROMPT_VERSION: str = "0"

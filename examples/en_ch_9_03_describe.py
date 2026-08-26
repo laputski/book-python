@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Tool, json_schema_for  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 import inspect, typing
 
 def describe(tool: type[Tool]) -> dict[str, object]:

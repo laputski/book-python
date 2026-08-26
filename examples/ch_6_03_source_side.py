@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Prompt  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from collections.abc import AsyncIterator
 
 async def stream(self, prompt: Prompt) -> AsyncIterator[str]:

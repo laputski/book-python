@@ -1,11 +1,12 @@
-"""Вспомогательные имена для листингов учебника.
+"""Helper names for the book's listings.
 
-Листинги опираются на имена, реализация которых к предмету не относится:
-типы предметной модели, обращения к внешним службам, разбиение текста на
-предложения. Здесь они объявлены с настоящими типами, чтобы проверка типов
-проверяла листинги по существу, а не обходила их стороной.
+The listings lean on names whose implementations are beside the point:
+domain-model types, calls to external services, sentence splitting. They
+are declared here with real types so that type checking exercises the
+listings in substance instead of walking around them.
 
-Файл сопровождается вручную вместе с extract_examples.py и в пособие не входит.
+The file is maintained by hand alongside extract_examples.py and is not
+part of the book.
 """
 
 from __future__ import annotations
@@ -23,7 +24,7 @@ import numpy as np
 import pytest
 from pydantic import BaseModel as _BaseModel
 
-# ─── Предметная модель ────────────────────────────────────────────────────────
+# --- The domain model --------------------------------------------------------
 
 UnitKind = Literal["passage", "proposition", "entity", "node_edge",
                    "page_image", "table_row", "summary_node"]
@@ -178,7 +179,7 @@ class DraftScore(_BaseModel):
     problem: str | None = None
 
 
-# ─── Внешние службы ───────────────────────────────────────────────────────────
+# --- External services -------------------------------------------------------
 
 
 class Retriever(Protocol):
@@ -319,7 +320,7 @@ class Settings:
     url: str = ""
 
 
-# ─── Исключения ───────────────────────────────────────────────────────────────
+# --- Exceptions --------------------------------------------------------------
 
 
 class RagError(Exception): ...
@@ -350,7 +351,7 @@ class OutputContractError(RagError):
         super().__init__(schema)
 
 
-# ─── Постоянные величины ──────────────────────────────────────────────────────
+# --- Constants ---------------------------------------------------------------
 
 DECAY: float = 0.8
 THRESHOLD: float = 0.7
@@ -360,7 +361,7 @@ SAMPLE_CORPUS: dict[str, str] = {}
 PROMPT_VERSION: str = "0"
 RETRYABLE: tuple[type[BaseException], ...] = (TimeoutError, ConnectionError, ServiceUnavailable)
 
-# ─── Обращения, реализация которых к предмету не относится ────────────────────
+# --- Calls whose implementations are beside the point ------------------------
 
 
 def read_text(path: str) -> str: raise NotImplementedError
@@ -415,7 +416,7 @@ def rrf_ids(rankings: Sequence[Sequence[Scored]], k: int = 10) -> list[str]: rai
 async def serve() -> None: raise NotImplementedError
 async def main() -> None: raise NotImplementedError
 
-# ─── Долгоживущие объекты ─────────────────────────────────────────────────────
+# --- Long-lived objects ------------------------------------------------------
 
 vector_store = VectorStore()
 bm25_index = LexicalIndex()
@@ -428,7 +429,7 @@ settings = Settings()
 log = logging.getLogger("rag")
 request_id: contextvars.ContextVar[str] = contextvars.ContextVar("request_id", default="-")
 
-# ─── Имена окружения, на которые опираются выдержки ───────────────────────────
+# --- Ambient names the excerpts lean on --------------------------------------
 
 query: str = ""
 question: str = ""
@@ -448,7 +449,7 @@ dense_hits: list[Scored] = []
 lexical_hits: list[Scored] = []
 sources: dict[str, Retriever] = {}
 retrieved: list[Scored] = []
-payload: Any = {}   # разбираемый ответ модели: может быть и отображением, и списком
+payload: Any = {}   # a model reply being parsed: may be a mapping or a sequence
 kind: str = ""
 module: Any = None
 dense_source: Retriever = DenseRetriever("dense")

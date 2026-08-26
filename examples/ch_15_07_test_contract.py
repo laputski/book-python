@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import DenseRetriever, FakeRetriever, Retriever, SAMPLE_CORPUS, settings  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 import os
 from itertools import pairwise
 

@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import find_sentence_end  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from collections.abc import AsyncIterator
 
 async def sentences(parts: AsyncIterator[str]) -> AsyncIterator[str]:

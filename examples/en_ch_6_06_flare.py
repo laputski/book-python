@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Cited, THRESHOLD, attach_citations, build_prompt, finish_without_lookahead, merge, model, retrieve, sentences_with_confidence, strip_uncertain_spans  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from collections.abc import AsyncIterator
 from contextlib import aclosing
 

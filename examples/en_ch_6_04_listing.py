@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import SENTINEL, asyncio, model, prompt  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 queue: asyncio.Queue[str] = asyncio.Queue()      # unbounded
 
 async def produce() -> None:

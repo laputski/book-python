@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Scored, bm25_index, embed, reciprocal_rank_fusion, reranker, vector_store  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 def search(query: str, k: int = 20) -> list[Scored]:
     vector = embed(query)                      # ≈ 30 мс, обращение к службе
     dense = vector_store.search(vector, k)     # ≈ 120 мс, обращение к хранилищу

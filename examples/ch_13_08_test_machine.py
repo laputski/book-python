@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Answer, Budget, Classify, Critique, Generate, Retrieve, step  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 import pytest
 
 @pytest.mark.asyncio

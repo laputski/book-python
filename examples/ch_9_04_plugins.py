@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Tool  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from importlib.metadata import entry_points
 
 def load_plugins(group: str = "rag.tools") -> None:

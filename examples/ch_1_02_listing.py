@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import bm25_index, k, query, vector, vector_store  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from concurrent.futures import ProcessPoolExecutor
 
 with ProcessPoolExecutor(max_workers=2) as pool:

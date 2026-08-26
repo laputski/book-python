@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Message, Model, OutputContractError, explain  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from pydantic import BaseModel, ValidationError
 
 async def ask_structured[T: BaseModel](model: Model, prompt: str, schema: type[T],

@@ -1,5 +1,5 @@
 {
-  "_comment": "Что учебник утверждает о записях реестра. Сверяется с data/registry_meta.json детектором дрейфа. kind=anchor означает опорную запись главы (правило: уровень L2 и выше), kind=illustration означает упоминание с явно названным уровнем.",
+  "_comment": "What the book claims about registry records. Compared against data/registry_meta.json by the drift detector. kind=anchor marks a chapter's anchor record (rule: level L2 and above); kind=illustration marks a mention with an explicitly stated level.",
   "claims": {
     "standard_hybridrag": {"level": "L2", "kind": "anchor", "chapters": [1, 5, 11]},
     "naive_dense":        {"level": "L2", "kind": "anchor", "chapters": [2]},

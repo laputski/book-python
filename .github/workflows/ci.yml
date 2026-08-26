@@ -1,5 +1,5 @@
-# Проверка пособия: сборка воспроизводима, листинги обеих локалей
-# проходят разбор, ruff и mypy на матрице версий Python.
+# Verify the book: the build is reproducible, and the listings of both
+# locales pass parsing, ruff, and mypy on a matrix of Python versions.
 name: ci
 
 on:
@@ -29,13 +29,13 @@ jobs:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
 
-      - name: Зависимости проверок
+      - name: Check dependencies
         run: pip install -r requirements-check.txt
 
-      - name: Сборка воспроизводима
+      - name: The build is reproducible
         run: |
           ./build.sh
           git diff --exit-code rag-python-advanced.html
 
-      - name: Листинги обеих локалей
+      - name: Listings of both locales
         run: ./check_examples.sh

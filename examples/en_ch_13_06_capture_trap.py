@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import kind, module  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 SIMPLE = "simple"
 
 match kind:

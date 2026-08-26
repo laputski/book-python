@@ -1,5 +1,5 @@
-# Деплой пособия на GitHub Pages (book.ragworld.org).
-# Запускается пушем в main и вызовом из других workflow (автообновление данных).
+# Deploy the book to GitHub Pages (book.ragworld.org).
+# Runs on pushes to main and when called from other workflows (the data auto-update).
 name: deploy
 
 on:
@@ -26,13 +26,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Собрать сайт
+      - name: Build the site
         run: |
           ./build.sh
           mkdir -p dist
           cp rag-python-advanced.html dist/index.html
 
-      - name: Включить Pages, если ещё не включены
+      - name: Enable Pages if not enabled yet
         uses: actions/configure-pages@v5
         with:
           enablement: true
@@ -44,10 +44,10 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Привязать домен book.ragworld.org
+      - name: Bind the book.ragworld.org domain
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api -X PUT "repos/${{ github.repository }}/pages" \
-            -f cname=book.ragworld.org || echo "домен привяжется после появления DNS-записи"
+            -f cname=book.ragworld.org || echo "the domain will bind once the DNS record exists"
         continue-on-error: true

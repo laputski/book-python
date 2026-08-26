@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import as_hits, rrf_ids  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from hypothesis import given, strategies as st
 
 rankings = st.lists(st.lists(st.text(min_size=1, max_size=6), max_size=20, unique=True),

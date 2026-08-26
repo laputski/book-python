@@ -1,4 +1,4 @@
-# Зависимости проверки листингов (check_examples.sh) и скриптов tools/.
+# Dependencies of the listing checks (check_examples.sh) and the tools/ scripts.
 ruff>=0.6
 mypy>=1.19
 numpy>=2.0

@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Retriever, Scored  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 import asyncio
 from collections.abc import Sequence
 

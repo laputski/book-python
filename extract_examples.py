@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Выносит листинги учебника в отдельные файлы для проверки инструментами."""
+"""Extract the book's listings into separate files for tool verification."""
 import html
 import pathlib
 import re
@@ -53,7 +53,7 @@ def main() -> None:
         path = OUT / f"{prefix}{chapter.replace('-', '_')}_{counters[locale_key]:02d}_{stem}.py"
         path.write_text(source + "\n", encoding="utf-8")
         written += 1
-    print(f"извлечено листингов: {written}")
+    print(f"listings extracted: {written}")
 
 
 if __name__ == "__main__":

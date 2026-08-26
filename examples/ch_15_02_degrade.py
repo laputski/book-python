@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Answer, RerankerUnavailable, SourceUnavailable, compose, fan_out, healthy_only, rerank, sources  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 async def handle(question: str) -> Answer:
     degraded: list[str] = []
     try:

@@ -1,6 +1,6 @@
 #!/bin/sh
-# Сборка пособия: каркас, русская локаль, английская локаль, сценарий.
-# Плейсхолдер {{REGISTRY_BUILT_AT}} заполняется из data/registry_meta.json.
+# Assemble the book: shell, Russian locale, English locale, page script.
+# The {{REGISTRY_BUILT_AT}} placeholder is filled from data/registry_meta.json.
 cd "$(dirname "$0")"
 BUILT_AT=$(python3 -c "import json; print(json.load(open('data/registry_meta.json'))['built_at'])")
 {
@@ -12,4 +12,4 @@ BUILT_AT=$(python3 -c "import json; print(json.load(open('data/registry_meta.jso
   printf '\n</div>\n'
   cat parts/99-tail.html
 } | sed "s/{{REGISTRY_BUILT_AT}}/$BUILT_AT/g" > rag-python-advanced.html
-echo "собрано: $(wc -c < rag-python-advanced.html) байт, реестр от $BUILT_AT"
+echo "built: $(wc -c < rag-python-advanced.html) bytes, registry of $BUILT_AT"

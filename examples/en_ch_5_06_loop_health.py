@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import log, serve  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 import asyncio, time
 
 async def monitor_lag(period: float = 0.5, threshold: float = 0.05) -> None:

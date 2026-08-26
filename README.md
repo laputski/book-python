@@ -1,72 +1,99 @@
-# Продвинутый Python для RAG · Advanced Python for RAG
+<div align="center">
 
-Двуязычный браузерный учебник о механизмах Python, на которых строятся
-гибридные, графовые, адаптивные и агентные системы извлечения.
-Один самодостаточный файл: пятнадцать глав, пять приложений, шестнадцать
-диаграмм, 103 проверенных листинга, переключатели языка и уровня подробности,
-печать в PDF. Предметный материал привязан к [реестру RAG World](https://ragworld.org).
+<img src="assets/logo.svg" width="140" alt="Advanced Python for RAG">
 
-Опубликован на **https://book.ragworld.org**.
+# Advanced Python for RAG
 
-## Структура
+**A bilingual, single-file browser textbook on the Python mechanisms that
+hybrid, graph, adaptive, and agentic retrieval systems stand on.**
 
-| Путь | Назначение |
+[![ci](https://github.com/laputski/book-python/actions/workflows/ci.yml/badge.svg)](https://github.com/laputski/book-python/actions/workflows/ci.yml)
+[![deploy](https://github.com/laputski/book-python/actions/workflows/deploy.yml/badge.svg)](https://github.com/laputski/book-python/actions/workflows/deploy.yml)
+[![weekly](https://github.com/laputski/book-python/actions/workflows/weekly.yml/badge.svg)](https://github.com/laputski/book-python/actions/workflows/weekly.yml)
+[![site](https://img.shields.io/badge/read-book.ragworld.org-0072B2)](https://book.ragworld.org)
+[![python](https://img.shields.io/badge/python-3.13%20%7C%203.14-3776AB?logo=python&logoColor=white)](https://book.ragworld.org)
+[![languages](https://img.shields.io/badge/languages-EN%20%7C%20RU-555)](https://book.ragworld.org)
+[![data](https://img.shields.io/badge/registry%20data-CC%20BY%204.0-97CA00)](https://ragworld.org)
+
+**[Read it at book.ragworld.org →](https://book.ragworld.org)**
+
+*Читайте документацию репозитория по-русски: [README.ru.md](README.ru.md)*
+
+</div>
+
+---
+
+Fifteen chapters, five appendices, sixteen hand-drawn SVG diagrams, and
+103 tool-verified code listings in one self-contained HTML file. A language
+switch (EN/RU), three reading-depth levels, full-text search, term popovers,
+print-to-PDF, day/night themes. Every chapter is anchored to a real
+architecture from the [RAG World registry](https://ragworld.org), with its
+maturity level stated and machine-checked.
+
+## Repository layout
+
+| Path | Purpose |
 | --- | --- |
-| `rag-python-advanced.html` | собранное пособие; артефакт сборки, коммитится |
-| `parts/` | исходные части: каркас, русская локаль, английская локаль, сценарий |
-| `build.sh` | сборка из частей с подстановкой даты сборки реестра |
-| `examples/` | листинги обеих локалей, извлечённые из пособия, + заглушки типов |
-| `check_examples.sh` | полная проверка листингов: разбор, ruff, mypy |
-| `data/anchors.json` | что учебник утверждает о записях реестра и версиях Python |
-| `data/registry_meta.json` | сводка реестра RAG World на момент последней сверки |
-| `tools/fetch_registry.py` | забор сводки реестра |
-| `tools/check_drift.py` | детектор устаревания: уровни, версии Python, ссылки |
+| `rag-python-advanced.html` | the assembled book; a build artifact, committed |
+| `parts/` | sources: shell, Russian locale, English locale, page script |
+| `build.sh` | assembles the book, substituting the registry build date |
+| `examples/` | listings of both locales extracted from the book, plus typed stubs |
+| `check_examples.sh` | full listing verification: parse, ruff, mypy |
+| `data/anchors.json` | what the book claims about registry records and Python versions |
+| `data/registry_meta.json` | RAG World registry summary as of the last sync |
+| `tools/fetch_registry.py` | fetches the registry summary |
+| `tools/check_drift.py` | staleness detector: levels, Python lifecycle, links |
 
-## Локальная работа
+## Working locally
 
 ```sh
-./build.sh            # пересобрать пособие после правки parts/
-./check_examples.sh   # извлечь листинги и прогнать все проверки
-python3 tools/check_drift.py   # сверка с реестром, версиями Python и ссылками
+./build.sh            # reassemble the book after editing parts/
+./check_examples.sh   # extract the listings and run every check
+python3 tools/check_drift.py   # sync check: registry, Python versions, links
 ```
 
-Просмотр: `python3 -m http.server 8731` и открыть
+Preview: `python3 -m http.server 8731`, then open
 `http://localhost:8731/rag-python-advanced.html`.
 
-## Деплой
+## Deployment
 
-GitHub Pages, деплой workflow-ом `.github/workflows/deploy.yml` на каждый пуш
-в `main`. Домен `book.ragworld.org` привязывается автоматически тем же
-workflow-ом; на стороне DNS нужна одна запись CNAME
-`book → laputski.github.io`. Принудительный HTTPS включается в
-Settings → Pages после выпуска сертификата.
+GitHub Pages, deployed by `.github/workflows/deploy.yml` on every push to
+`main`. The `book.ragworld.org` domain is bound automatically by the same
+workflow; on the DNS side a single CNAME record `book → laputski.github.io`
+is required. Enforce HTTPS in Settings → Pages once the certificate is issued.
 
-## Самообновление
+## Self-updating
 
-Правило: **данные обновляются автоматически, текст — только через редакцию.**
+The rule: **data updates automatically, prose changes only through review.**
 
-- `ci.yml` — на каждый пуш: сборка воспроизводима, листинги обеих локалей
-  проходят разбор, ruff и mypy на Python 3.13, 3.14 и предварительном 3.15.
-- `weekly.yml` — по понедельникам, вручную, либо по событию
-  `registry-updated` от rag-world: забирает сводку реестра, при изменении
-  коммитит данные и передеплоивает сайт (в тексте меняется только дата сверки
-  в приложении E.4); детектор устаревания сверяет уровни зрелости,
-  жизненный цикл версий Python и внешние ссылки, и при дрейфе открывает
-  Issue с меткой `drift` — правку текста вносит человек через PR.
-- Расписание публичных репозиториев засыпает после 60 дней без коммитов;
-  workflow сам оставляет отметку сверки, если тишина длится дольше 45 дней.
+- `ci.yml` — on every push: the build is reproducible, and the listings of
+  both locales pass parsing, ruff, and mypy on Python 3.13, 3.14, and the
+  3.15 prerelease.
+- `weekly.yml` — on Mondays, manually, or on a `registry-updated` event from
+  rag-world: fetches the registry summary; on change, commits the data and
+  redeploys the site (only the sync date in Appendix E.4 changes in the
+  text); the staleness detector compares maturity levels, the Python release
+  lifecycle, and external links, and opens a `drift`-labelled issue when they
+  diverge — a human lands the prose fix through a PR.
+- Scheduled workflows on public repositories go dormant after 60 days
+  without commits; the workflow leaves a sync mark if the quiet stretch
+  exceeds 45 days.
 
-Чтобы пособие обновлялось в день обновления реестра, а не по понедельникам,
-в workflow пассов данных rag-world добавьте шаг:
+To have the book update the day the registry updates rather than on Mondays,
+add one step to the rag-world data-pass workflow:
 
 ```yaml
-- name: Уведомить учебник
+- name: Notify the book
   env:
     GH_TOKEN: ${{ secrets.BOOK_DISPATCH_TOKEN }}   # fine-grained, repo book-python, contents:write
   run: gh api repos/laputski/book-python/dispatches -f event_type=registry-updated
 ```
 
-## Лицензии
+## Licensing
 
-Данные реестра RAG World распространяются по CC BY 4.0 и используются
-с указанием источника. Лицензия текста пособия пока не выбрана.
+RAG World registry data is distributed under CC BY 4.0 and is used with
+attribution. The licence for the book's text has not been chosen yet.
+
+*Note: code comments inside the book's Russian-locale listings are in
+Russian by design — they are part of the Russian text of the textbook.
+The English locale carries the same listings with English comments.*

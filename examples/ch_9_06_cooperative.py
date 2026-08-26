@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import wrap_public_methods  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from typing import ClassVar
 
 class Registered:

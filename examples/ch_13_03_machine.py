@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Answer, Budget, Classify, Critique, Generate, Retrieve, State, generate, grounded, route, search, spend  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from typing import assert_never
 
 async def step(state: State, budget: Budget) -> tuple[State, Budget]:

@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Scored, search  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from pydantic import BaseModel, Field
 
 class SearchRequest(BaseModel):

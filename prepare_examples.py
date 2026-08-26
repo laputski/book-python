@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Готовит извлечённые листинги к проверке типов.
+"""Prepare the extracted listings for type checking.
 
-Выдержки, у которых await или return стоят на верхнем уровне, оборачиваются в
-функцию: без этого их нельзя откомпилировать, а значит и проверить. Затем к
-каждому файлу дописывается импорт тех имён, реализация которых вынесена в
-заглушки. Сами листинги в пособии при этом не меняются.
+Excerpts with top-level await or return are wrapped in a function: they
+cannot be compiled, and hence checked, otherwise. An import of the names
+whose implementations live in the stubs is then prepended to each file.
+The listings inside the book itself are never modified.
 """
 import json
 import pathlib
@@ -12,8 +12,8 @@ import subprocess
 import textwrap
 
 OUT = pathlib.Path("examples")
-HEADER = "# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.\n"
-MARK = "# ─── листинг ───\n"
+HEADER = "# Extracted from the book automatically. Lines above the mark are not part of the listing.\n"
+MARK = "# --- the listing ---\n"
 
 
 def undefined_names() -> dict[str, list[str]]:
@@ -61,16 +61,16 @@ def inject_imports(names: dict[str, list[str]]) -> int:
 
 
 def main() -> None:
-    print("обёрнуто выдержек:", wrap_if_needed())
-    print("файлов с импортом заглушек:", inject_imports(undefined_names()))
+    print("excerpts wrapped:", wrap_if_needed())
+    print("files given stub imports:", inject_imports(undefined_names()))
     left = undefined_names()
     left.pop("stubs.py", None)
     if left:
-        print("осталось неопределённым:")
+        print("still undefined:")
         for name, items in sorted(left.items()):
             print(" ", name, items)
     else:
-        print("неопределённых имён не осталось")
+        print("no undefined names remain")
 
 
 if __name__ == "__main__":

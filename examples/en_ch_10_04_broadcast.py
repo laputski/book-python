@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import freshness, index  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 import numpy as np
 
 queries = np.random.rand(32, 128).astype(np.float32)     # a batch of queries

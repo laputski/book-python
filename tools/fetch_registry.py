@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Забирает сводку реестра RAG World для сверки и подстановки при сборке.
+"""Fetch the RAG World registry summary for drift checks and the build.
 
-Пишет data/registry_meta.json: дату сборки реестра, дату забора и уровни
-зрелости всех записей. Возвращает код 0, если данные не изменились,
-и 3, если изменились (сигнал для автокоммита).
+Writes data/registry_meta.json: the registry build date, the fetch date,
+and the maturity level of every record. Exits with 0 when nothing changed
+and with 3 when the data changed (the signal for an auto-commit).
 """
 import json
 import pathlib
@@ -12,20 +12,20 @@ import sys
 import urllib.request
 
 URL = "https://ragworld.org/data/registry.json"
+OUT = pathlib.Path(__file__).resolve().parent.parent / "data" / "registry_meta.json"
 
 
 def tls_context() -> ssl.SSLContext:
-    """Системное хранилище сертификатов, а при его отсутствии certifi.
+    """The system trust store, falling back to certifi when it is empty.
 
-    Питон с python.org на macOS поставляется без корневых сертификатов,
-    пока не запущен Install Certificates.command; certifi закрывает этот случай.
+    Python.org builds on macOS ship without root certificates until
+    Install Certificates.command has been run; certifi covers that case.
     """
     context = ssl.create_default_context()
     if context.cert_store_stats()["x509_ca"] == 0:
         import certifi
         context = ssl.create_default_context(cafile=certifi.where())
     return context
-OUT = pathlib.Path(__file__).resolve().parent.parent / "data" / "registry_meta.json"
 
 
 def level_of(record: dict) -> str | None:
@@ -46,8 +46,8 @@ def main() -> int:
               {k: previous.get(k) for k in ("built_at", "count", "levels")}
     OUT.write_text(json.dumps(meta, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
                    encoding="utf-8")
-    print(f"реестр: сборка {meta['built_at']}, записей {meta['count']}, "
-          f"{'изменился' if changed else 'без изменений'}")
+    print(f"registry: build {meta['built_at']}, {meta['count']} records, "
+          f"{'changed' if changed else 'unchanged'}")
     return 3 if changed else 0
 
 

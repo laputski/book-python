@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import HYDE_PROMPT, model  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from functools import lru_cache
 
 @lru_cache(maxsize=4096)

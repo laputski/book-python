@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Scored  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 def collapse_to_documents(hits: list[Scored]) -> list[Scored]:
     """Keeps each document's best chunk, ordered by descending score."""
     best: dict[str, Scored] = {}

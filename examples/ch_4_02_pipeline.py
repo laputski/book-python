@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Chunk, Sentence, normalize, read_text, split_sentences  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from collections.abc import Iterable, Iterator
 from itertools import batched
 

@@ -1,6 +1,6 @@
-# Извлечено из пособия автоматически. Строки до отметки в листинг не входят.
+# Extracted from the book automatically. Lines above the mark are not part of the listing.
 from stubs import Bm25Retriever, DenseRetriever, GraphRetriever, Retriever  # noqa: F401
-# ─── листинг ───
+# --- the listing ---
 from typing import Annotated, Literal, TypedDict
 
 SearchOperator = Literal["ann", "lexical", "graph_traversal",

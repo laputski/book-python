@@ -1,14 +1,14 @@
-# Еженедельная сверка с внешним миром: реестр RAG World, жизненный цикл
-# версий Python, внешние ссылки. Данные обновляются автокоммитом; текст
-# пособия автоматика не меняет никогда — при дрейфе открывается Issue.
+# The weekly sync with the outside world: the RAG World registry, the
+# Python release lifecycle, external links. Data updates by auto-commit;
+# the book's prose is never edited by automation — drift opens an issue.
 name: weekly
 
 on:
   schedule:
-    - cron: "20 6 * * 1"          # понедельник, 06:20 UTC
+    - cron: "20 6 * * 1"          # Monday, 06:20 UTC
   workflow_dispatch:
   repository_dispatch:
-    types: [registry-updated]     # rag-world может дёргать сразу после пасса данных
+    types: [registry-updated]     # rag-world may fire this right after a data pass
 
 permissions:
   contents: write
@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Забрать сводку реестра
+      - name: Fetch the registry summary
         id: fetch
         run: |
           set +e
@@ -39,7 +39,7 @@ jobs:
           elif [ "$code" = "0" ]; then echo "changed=no" >> "$GITHUB_OUTPUT";
           else exit "$code"; fi
 
-      - name: Детектор устаревания
+      - name: Staleness detector
         id: drift
         run: |
           set +e
@@ -51,45 +51,45 @@ jobs:
           elif [ "$code" = "0" ]; then echo "found=no" >> "$GITHUB_OUTPUT";
           else exit "$code"; fi
 
-      - name: Открыть Issue о дрейфе (если нет открытого)
+      - name: Open a drift issue (unless one is open)
         if: steps.drift.outputs.found == 'yes'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh label create drift --color D93F0B \
-            --description "Содержание разошлось с внешними источниками" 2>/dev/null || true
+            --description "The content diverged from external sources" 2>/dev/null || true
           existing=$(gh issue list --label drift --state open --json number --jq length)
           if [ "$existing" = "0" ]; then
-            gh issue create --title "Обнаружено устаревание содержания" \
+            gh issue create --title "Content staleness detected" \
               --label drift --body-file drift.md
           else
             number=$(gh issue list --label drift --state open --json number --jq '.[0].number')
             gh issue comment "$number" --body-file drift.md
           fi
 
-      - name: Закоммитить обновлённые данные
+      - name: Commit the refreshed data
         if: steps.fetch.outputs.changed == 'yes'
         run: |
           ./build.sh
           git config user.name "book-bot"
           git config user.email "actions@github.com"
           git add data/registry_meta.json rag-python-advanced.html
-          git commit -m "chore(data): реестр от $(python3 -c "import json; print(json.load(open('data/registry_meta.json'))['built_at'])")"
+          git commit -m "chore(data): registry of $(python3 -c "import json; print(json.load(open('data/registry_meta.json'))['built_at'])")"
           git push
 
-      - name: Страховка от 60-дневного отключения расписания
+      - name: Guard against the 60-day schedule sleep
         if: steps.fetch.outputs.changed == 'no'
         run: |
           last=$(git log -1 --format=%ct)
           now=$(date +%s)
           days=$(( (now - last) / 86400 ))
-          echo "дней с последнего коммита: $days"
+          echo "days since the last commit: $days"
           if [ "$days" -gt 45 ]; then
             git config user.name "book-bot"
             git config user.email "actions@github.com"
             date -u +%Y-%m-%dT%H:%M:%SZ > data/.last-checked
             git add data/.last-checked
-            git commit -m "chore: отметка сверки (расписание живо)"
+            git commit -m "chore: sync mark (the schedule stays alive)"
             git push
           fi
 

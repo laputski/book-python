@@ -1,0 +1,101 @@
+# Еженедельная сверка с внешним миром: реестр RAG World, жизненный цикл
+# версий Python, внешние ссылки. Данные обновляются автокоммитом; текст
+# пособия автоматика не меняет никогда — при дрейфе открывается Issue.
+name: weekly
+
+on:
+  schedule:
+    - cron: "20 6 * * 1"          # понедельник, 06:20 UTC
+  workflow_dispatch:
+  repository_dispatch:
+    types: [registry-updated]     # rag-world может дёргать сразу после пасса данных
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.fetch.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Забрать сводку реестра
+        id: fetch
+        run: |
+          set +e
+          python3 tools/fetch_registry.py
+          code=$?
+          set -e
+          if [ "$code" = "3" ]; then echo "changed=yes" >> "$GITHUB_OUTPUT";
+          elif [ "$code" = "0" ]; then echo "changed=no" >> "$GITHUB_OUTPUT";
+          else exit "$code"; fi
+
+      - name: Детектор устаревания
+        id: drift
+        run: |
+          set +e
+          python3 tools/check_drift.py > drift.md
+          code=$?
+          set -e
+          cat drift.md
+          if [ "$code" = "4" ]; then echo "found=yes" >> "$GITHUB_OUTPUT";
+          elif [ "$code" = "0" ]; then echo "found=no" >> "$GITHUB_OUTPUT";
+          else exit "$code"; fi
+
+      - name: Открыть Issue о дрейфе (если нет открытого)
+        if: steps.drift.outputs.found == 'yes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing=$(gh issue list --label drift --state open --json number --jq length)
+          if [ "$existing" = "0" ]; then
+            gh issue create --title "Обнаружено устаревание содержания" \
+              --label drift --body-file drift.md
+          else
+            number=$(gh issue list --label drift --state open --json number --jq '.[0].number')
+            gh issue comment "$number" --body-file drift.md
+          fi
+
+      - name: Закоммитить обновлённые данные
+        if: steps.fetch.outputs.changed == 'yes'
+        run: |
+          ./build.sh
+          git config user.name "book-bot"
+          git config user.email "actions@github.com"
+          git add data/registry_meta.json rag-python-advanced.html
+          git commit -m "chore(data): реестр от $(python3 -c "import json; print(json.load(open('data/registry_meta.json'))['built_at'])")"
+          git push
+
+      - name: Страховка от 60-дневного отключения расписания
+        if: steps.fetch.outputs.changed == 'no'
+        run: |
+          last=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          days=$(( (now - last) / 86400 ))
+          echo "дней с последнего коммита: $days"
+          if [ "$days" -gt 45 ]; then
+            git config user.name "book-bot"
+            git config user.email "actions@github.com"
+            date -u +%Y-%m-%dT%H:%M:%SZ > data/.last-checked
+            git add data/.last-checked
+            git commit -m "chore: отметка сверки (расписание живо)"
+            git push
+          fi
+
+  deploy:
+    needs: refresh
+    if: needs.refresh.outputs.changed == 'yes'
+    uses: ./.github/workflows/deploy.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

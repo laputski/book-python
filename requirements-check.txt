@@ -1,0 +1,12 @@
+# Зависимости проверки листингов (check_examples.sh) и скриптов tools/.
+ruff>=0.6
+mypy>=1.19
+numpy>=2.0
+networkx>=3.4
+scipy>=1.14
+pydantic>=2.9
+pytest>=8.3
+hypothesis>=6.100
+scipy-stubs
+types-networkx
+certifi

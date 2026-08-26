@@ -56,6 +56,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          gh label create drift --color D93F0B \
+            --description "Содержание разошлось с внешними источниками" 2>/dev/null || true
           existing=$(gh issue list --label drift --state open --json number --jq length)
           if [ "$existing" = "0" ]; then
             gh issue create --title "Обнаружено устаревание содержания" \

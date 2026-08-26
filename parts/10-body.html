@@ -38,7 +38,7 @@
 <div class="tw"><table>
 <thead><tr><th>Уровень</th><th>Что показывается</th><th>Для чего годится</th></tr></thead>
 <tbody>
-<tr><td><b>Обзор</b></td><td>Определения, изложение механизма, диаграммы, корректные решения с листингами, итоги</td><td>Быстрое знакомство с темой, повторение перед применением, поиск нужного механизма</td></tr>
+<tr><td><b>Обзор</b></td><td>Определения, изложение механизма, диаграммы, продуманные решения с листингами, итоги</td><td>Быстрое знакомство с темой, повторение перед применением, поиск нужного механизма</td></tr>
 <tr><td><b>Стандарт</b></td><td>Дополнительно: разбор наивных решений, построчные пояснения к листингам, замечания в сторону и вопросы для самопроверки</td><td>Первое изучение темы</td></tr>
 <tr><td><b>Полный</b></td><td>Дополнительно: обоснования утверждений, краевые случаи, замечания о внутреннем устройстве интерпретатора, ссылки на предложения по развитию языка</td><td>Углублённая проработка, подготовка к принятию архитектурного решения</td></tr>
 </tbody></table></div>
@@ -324,7 +324,7 @@
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы решения">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -341,7 +341,7 @@ with ProcessPoolExecutor(max_workers=2) as pool:
     <p>Этот код либо не запустится, либо окажется медленнее исходного. Объект хранилища содержит открытое соединение, а соединение не переносится в другой процесс: попытка передать его завершится ошибкой сериализации. Даже если заменить объект на функцию, создающую соединение заново, накладные расходы на запуск процесса и на передачу результата превысят те сорок миллисекунд, ради которых всё затевалось.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <p>Обе операции проводят время в ожидании ответа, поэтому подходит любая модель из левой ветви дерева. При двух обращениях достаточно потоков: они не требуют асинхронных версий методов хранилища.</p>
     <figure class="code" data-fold="0">
       <figcaption><span class="file">search_threads.py</span></figcaption>
@@ -566,7 +566,7 @@ def account(label: str):
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы описания контракта">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -586,7 +586,7 @@ class ColbertRetriever(BaseRetriever):     # обязан знать про Base
     <p>Обходной приём состоит в регистрации класса через <code>BaseRetriever.register</code>. Он снимает возражение во время исполнения и не снимает его при проверке типов, поскольку сигнатуры при регистрации не сверяются вовсе.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <p>Протокол описывает обязательство отдельно от реализаций. Ни одна из них не упоминает протокол и не импортирует его.</p>
     <figure class="code" data-fold="0">
       <figcaption><span class="file">contracts.py</span></figcaption>
@@ -1102,7 +1102,7 @@ def deep_size(obj: object, seen: set[int] | None = None) -> int:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы проверки">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -1125,7 +1125,7 @@ class Scored(BaseModel):
     <p>Каждое создание оценённого фрагмента влечёт проверку вложенного фрагмента, хотя тот был проверен при поступлении и с тех пор неизменен. При переранжировании нескольких сотен кандидатов на запрос эта работа повторяется сотни раз без какой-либо пользы.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <p>Проверяемая модель применяется только там, где данные пересекают границу системы. Внутри действуют классы данных.</p>
     <figure class="code" data-fold="0">
       <figcaption><span class="file">boundary.py</span></figcaption>
@@ -1395,7 +1395,7 @@ class Chunk:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы построения конвейера">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -1412,7 +1412,7 @@ class Chunk:
     <p>Отдельно стоит заметить, что первая же строка делает невозможной обработку по мере поступления: пока не прочитан последний файл, не начинается ничто.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="16">
       <figcaption><span class="file">pipeline.py</span></figcaption>
       <pre><code>from collections.abc import Iterable, Iterator
@@ -1755,7 +1755,7 @@ def resumable(paths: list[str], cursor: Path) -> Iterator[tuple[str, str]]:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы одновременного обращения">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -1775,7 +1775,7 @@ good = [r for r in results if not isinstance(r, Exception)]</code></pre>
     <p>Кроме того, отменить всю группу по превышению времени здесь нечем: отменять пришлось бы каждую задачу по отдельности, предварительно сохранив ссылки на них.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="18">
       <figcaption><span class="file">fanout.py</span><a class="pyver" href="https://docs.python.org/3/whatsnew/3.11.html" target="_blank" rel="noreferrer">3.11+</a></figcaption>
       <pre><code>import asyncio
@@ -2182,7 +2182,7 @@ async def stream(self, prompt: Prompt) -> AsyncIterator[str]:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы передачи потока">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -2199,7 +2199,7 @@ async def produce() -> None:
     <p>Заметить это в разработке трудно: при одном пользователе с быстрым соединением разницы нет. Проявляется беда под нагрузкой и выглядит как необъяснимый рост потребления памяти.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="18">
       <figcaption><span class="file">backpressure.py</span></figcaption>
       <pre><code>import asyncio
@@ -2552,7 +2552,7 @@ class Chunk:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы работы с несколькими ресурсами">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -2575,7 +2575,7 @@ finally:
     <p>Запись верна, но плохо переносит изменения. Добавление ресурса сдвигает тело ещё на уровень; условное занятие ресурса, нужного лишь иногда, вынуждает либо дублировать тело, либо вводить признаки и ветвления в блоках освобождения.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="16">
       <figcaption><span class="file">resources.py</span></figcaption>
       <pre><code>from contextlib import AsyncExitStack, asynccontextmanager
@@ -2896,7 +2896,7 @@ def timed[**P, R](fn: Callable[P, Awaitable[R]]) -> Callable[P, Awaitable[R]]:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы кэширования">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -2912,7 +2912,7 @@ async def hypothetical(question: str) -> str:
     <p>Есть и вторая беда, свойственная <code>lru_cache</code> и в синхронном случае: при одновременном промахе десяти запросов по одному ключу все десять пойдут в службу. Кэш заполнится десятью одинаковыми вычислениями, из которых девять были лишними.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="20">
       <figcaption><span class="file">async_cache.py</span></figcaption>
       <pre><code>import asyncio
@@ -3257,7 +3257,7 @@ class CacheStats:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы ведения реестра">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -3274,7 +3274,7 @@ class CacheStats:
     <p>Второй вариант той же ошибки состоит в заполнении словаря побочным действием импорта. Тогда наличие инструмента зависит от того, был ли импортирован его модуль, а это зависит от порядка импортов и потому меняется от перестановки строк.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="20">
       <figcaption><span class="file">registry.py</span></figcaption>
       <pre><code>from typing import Any, ClassVar
@@ -3634,7 +3634,7 @@ assert index[0, 0] == 1.0        # исходный массив изменён<
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы вычисления близости">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -3654,7 +3654,7 @@ def cosine_top_k(query: list[float], index: list[list[float]], k: int) -> list[i
     <p>Помимо очевидной медленности, здесь есть две менее заметные беды. Нормы строк пересчитываются при каждом запросе, хотя не меняются от запроса к запросу. Полная сортировка выполняется ради нескольких верхних элементов, тогда как для этого достаточно частичного отбора.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="18">
       <figcaption><span class="file">similarity.py</span></figcaption>
       <pre><code>import numpy as np
@@ -3956,7 +3956,7 @@ def bench(fn: Callable[[], object], *, warmup: int = 3, runs: int = 15) -> float
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы слияния">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -3973,7 +3973,7 @@ best = sorted(merged.items(), key=lambda kv: -kv[1])[:k]</code></pre>
     <p>Вторая беда состоит в отсутствующих кандидатах. Документ, найденный только одним источником, получает вклад от одного слагаемого, и его положение определяется тем, у какого источника шкала крупнее, а не тем, насколько он подходит.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <p>Обратное ранговое слияние отказывается от оценок вовсе и пользуется только положением в списке.</p>
     <figure class="code" data-fold="16">
       <figcaption><span class="file">fusion.py</span></figcaption>
@@ -4346,7 +4346,7 @@ def maxsim_batch(query: np.ndarray, flat: np.ndarray,
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы обхода">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -4363,7 +4363,7 @@ def maxsim_batch(query: np.ndarray, flat: np.ndarray,
     <p>Попытка исправить положение уменьшением глубины до двух лишает обход смысла: ответы, ради которых граф строился, требуют именно нескольких шагов.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="20">
       <figcaption><span class="file">traversal.py</span></figcaption>
       <pre><code>import heapq
@@ -4684,7 +4684,7 @@ def personalized_rank(adjacency: csr_matrix, seeds: np.ndarray,
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Способы описания цикла">
     <button role="tab" aria-selected="false" data-level="2">Наивно</button>
-    <button role="tab" aria-selected="true">Корректно</button>
+    <button role="tab" aria-selected="true">Продуманно</button>
     <button role="tab" aria-selected="false" data-level="2">В чём разница</button>
   </div>
 
@@ -4710,7 +4710,7 @@ while not done:
     <p>Кроме того, здесь смешаны три разных ограничения: число переписываний, наличие контекста и признак завершения. Изменение любого из них требует перечитывания всего цикла.</p>
   </div>
 
-  <div role="tabpanel" data-title="Корректно">
+  <div role="tabpanel" data-title="Продуманно">
     <figure class="code" data-fold="26">
       <figcaption><span class="file">states.py</span><a class="pyver" href="https://docs.python.org/3/whatsnew/3.11.html" target="_blank" rel="noreferrer">3.11+</a></figcaption>
       <pre><code>from dataclasses import dataclass

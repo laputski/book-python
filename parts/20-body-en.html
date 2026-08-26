@@ -38,7 +38,7 @@
 <div class="tw"><table>
 <thead><tr><th>Level</th><th>What is shown</th><th>What it is good for</th></tr></thead>
 <tbody>
-<tr><td><b>Overview</b></td><td>Definitions, core exposition of each mechanism, diagrams, correct solutions with their listings, takeaways</td><td>A quick acquaintance with a topic, revision before applying it, finding the right mechanism</td></tr>
+<tr><td><b>Overview</b></td><td>Definitions, core exposition of each mechanism, diagrams, considered solutions with their listings, takeaways</td><td>A quick acquaintance with a topic, revision before applying it, finding the right mechanism</td></tr>
 <tr><td><b>Standard</b></td><td>Additionally: walkthroughs of naive solutions, line-by-line annotations of listings, side notes, and self-check questions</td><td>Studying a topic for the first time</td></tr>
 <tr><td><b>Full</b></td><td>Additionally: justifications of the claims, edge cases, remarks on interpreter internals, and references to language proposals</td><td>In-depth study, preparation for an architectural decision</td></tr>
 </tbody></table></div>
@@ -324,7 +324,7 @@
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Approaches">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -341,7 +341,7 @@ with ProcessPoolExecutor(max_workers=2) as pool:
     <p>This code either fails to start or ends up slower than the original. The store object holds an open connection, and a connection does not survive transfer into another process: the attempt ends in a serialization error. Even if the object is replaced by a function that opens a connection anew, the overhead of starting a process and shipping the result back outweighs the forty milliseconds the whole exercise was about.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <p>Both operations spend their time waiting for a reply, so any model from the left branch of the tree fits. For two calls, threads are enough: they do not require asynchronous variants of the store's methods.</p>
     <figure class="code" data-fold="0">
       <figcaption><span class="file">search_threads.py</span></figcaption>
@@ -562,7 +562,7 @@ def account(label: str):
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to state the contract">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -582,7 +582,7 @@ class ColbertRetriever(BaseRetriever):     # must know about BaseRetriever
     <p>The workaround is registration via <code>BaseRetriever.register</code>. It removes the objection at run time and leaves it in place at type-checking time, since signatures are not compared during registration at all.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <p>A protocol states the obligation apart from the implementations. None of them mentions the protocol or imports it.</p>
     <figure class="code" data-fold="0">
       <figcaption><span class="file">contracts.py</span></figcaption>
@@ -1098,7 +1098,7 @@ def deep_size(obj: object, seen: set[int] | None = None) -> int:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Validation approaches">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -1121,7 +1121,7 @@ class Scored(BaseModel):
     <p>Every construction of a scored chunk entails validating the nested chunk, though it was validated on arrival and has not changed since. With several hundred candidates reranked per query, that work is repeated hundreds of times to no purpose.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <p>The validated model is applied only where data crosses the system boundary. Inside, dataclasses rule.</p>
     <figure class="code" data-fold="0">
       <figcaption><span class="file">boundary.py</span></figcaption>
@@ -1391,7 +1391,7 @@ class Chunk:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to build the pipeline">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -1408,7 +1408,7 @@ class Chunk:
     <p>Note separately that the very first line rules out processing as data arrives: until the last file is read, nothing begins.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="16">
       <figcaption><span class="file">pipeline.py</span></figcaption>
       <pre><code>from collections.abc import Iterable, Iterator
@@ -1751,7 +1751,7 @@ def resumable(paths: list[str], cursor: Path) -> Iterator[tuple[str, str]]:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to fan out">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -1771,7 +1771,7 @@ good = [r for r in results if not isinstance(r, Exception)]</code></pre>
     <p>Moreover, there is nothing here to cancel the whole group on a deadline: each task would have to be cancelled individually, with references to them saved in advance.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="18">
       <figcaption><span class="file">fanout.py</span><a class="pyver" href="https://docs.python.org/3/whatsnew/3.11.html" target="_blank" rel="noreferrer">3.11+</a></figcaption>
       <pre><code>import asyncio
@@ -2178,7 +2178,7 @@ async def stream(self, prompt: Prompt) -> AsyncIterator[str]:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to relay the stream">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -2195,7 +2195,7 @@ async def produce() -> None:
     <p>This is hard to notice in development: with one user on a fast connection there is no difference. The trouble surfaces under load, looking like inexplicable memory growth.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="18">
       <figcaption><span class="file">backpressure.py</span></figcaption>
       <pre><code>import asyncio
@@ -2548,7 +2548,7 @@ class Chunk:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to hold several resources">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -2571,7 +2571,7 @@ finally:
     <p>The spelling is correct but brittle under change. Adding a resource pushes the body one level deeper; a resource needed only sometimes forces either duplicating the body or scattering flags and branches through the release blocks.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="16">
       <figcaption><span class="file">resources.py</span></figcaption>
       <pre><code>from contextlib import AsyncExitStack, asynccontextmanager
@@ -2892,7 +2892,7 @@ def timed[**P, R](fn: Callable[P, Awaitable[R]]) -> Callable[P, Awaitable[R]]:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Caching approaches">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -2908,7 +2908,7 @@ async def hypothetical(question: str) -> str:
     <p>There is a second flaw, present in the synchronous case too: on a simultaneous miss by ten requests with one key, all ten go to the service. The cache fills with ten identical computations, nine of them wasted.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="20">
       <figcaption><span class="file">async_cache.py</span></figcaption>
       <pre><code>import asyncio
@@ -3253,7 +3253,7 @@ class CacheStats:
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to keep the registry">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -3270,7 +3270,7 @@ class CacheStats:
     <p>A second form of the same mistake fills the dictionary as an import side effect. The tool's presence then depends on whether its module happened to be imported, which depends on import order, which changes when lines are shuffled.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="20">
       <figcaption><span class="file">registry.py</span></figcaption>
       <pre><code>from typing import Any, ClassVar
@@ -3630,7 +3630,7 @@ assert index[0, 0] == 1.0        # the original has changed</code></pre>
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to compute similarity">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -3650,7 +3650,7 @@ def cosine_top_k(query: list[float], index: list[list[float]], k: int) -> list[i
     <p>Beyond the obvious slowness, two subtler faults hide here. The row norms are recomputed on every query though they never change between queries. A full sort runs for the sake of a few top elements, where a partial selection would do.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="18">
       <figcaption><span class="file">similarity.py</span></figcaption>
       <pre><code>import numpy as np
@@ -3952,7 +3952,7 @@ def bench(fn: Callable[[], object], *, warmup: int = 3, runs: int = 15) -> float
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Fusion approaches">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -3969,7 +3969,7 @@ best = sorted(merged.items(), key=lambda kv: -kv[1])[:k]</code></pre>
     <p>A second trouble concerns absent candidates. A document found by only one source receives one term's contribution, and its position is decided by whose scale is coarser, not by how well it fits.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <p>Reciprocal rank fusion renounces the scores altogether and uses only positions in the lists.</p>
     <figure class="code" data-fold="16">
       <figcaption><span class="file">fusion.py</span></figcaption>
@@ -4342,7 +4342,7 @@ def maxsim_batch(query: np.ndarray, flat: np.ndarray,
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Traversal approaches">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -4359,7 +4359,7 @@ def maxsim_batch(query: np.ndarray, flat: np.ndarray,
     <p>Trimming the depth to two to compensate guts the walk of its purpose: the answers the graph was built for require precisely the several hops.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="20">
       <figcaption><span class="file">traversal.py</span></figcaption>
       <pre><code>import heapq
@@ -4680,7 +4680,7 @@ def personalized_rank(adjacency: csr_matrix, seeds: np.ndarray,
 <div class="tabs" data-tabs>
   <div role="tablist" aria-label="Ways to describe the loop">
     <button role="tab" aria-selected="false" data-level="2">Naive</button>
-    <button role="tab" aria-selected="true">Correct</button>
+    <button role="tab" aria-selected="true">Considered</button>
     <button role="tab" aria-selected="false" data-level="2">The difference</button>
   </div>
 
@@ -4706,7 +4706,7 @@ while not done:
     <p>Three unrelated limits are also entangled here: the rewrite count, the context's presence, and the completion flag. Changing any one requires rereading the whole loop.</p>
   </div>
 
-  <div role="tabpanel" data-title="Correct">
+  <div role="tabpanel" data-title="Considered">
     <figure class="code" data-fold="26">
       <figcaption><span class="file">states.py</span><a class="pyver" href="https://docs.python.org/3/whatsnew/3.11.html" target="_blank" rel="noreferrer">3.11+</a></figcaption>
       <pre><code>from dataclasses import dataclass

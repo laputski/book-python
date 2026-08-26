@@ -98,7 +98,9 @@ def check_links(report: list[str]) -> None:
                 if resp.status >= 400:
                     report.append(f"- link answers {resp.status}: {url}")
         except urllib.error.HTTPError as err:
-            if err.code == 405:  # HEAD forbidden, yet the address is alive
+            # 405: HEAD forbidden. 403: publisher turns robots away.
+            # Both answer from a live address, so neither is a dead link.
+            if err.code in (403, 405):
                 continue
             report.append(f"- link answers {err.code}: {url}")
         except Exception as err:

@@ -3494,7 +3494,7 @@ class SingleFlightCache[K, V]:
 
 <dl class="def">
 <dt>Экспоненциальная задержка со случайным разбросом <span class="en">(exponential backoff with jitter)</span></dt>
-<dd>Правило, при котором задержка перед очередной попыткой растёт как степень номера попытки, а окончательное значение выбирается случайно из промежутка от нуля до вычисленного. Разброс разводит одновременно отказавших клиентов во времени.</dd>
+<dd>Правило, при котором задержка перед очередной попыткой растёт как степень номера попытки, а окончательное значение выбирается случайно из промежутка от нуля до вычисленного. Разброс разводит одновременно отказавших клиентов во времени.<a class="src" href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/" target="_blank" rel="noreferrer">Brooker, Exponential Backoff and Jitter, 2015</a></dd>
 </dl>
 
 <figure class="code" data-fold="16">
@@ -3637,13 +3637,13 @@ class CacheStats:
         return self.joined / self.misses if self.misses else 0.0</code></pre>
 </figure>
 
-<p data-level="3">Доля попаданий ниже нескольких процентов означает, что кэш не окупает ни памяти, ни сложности, и его следует убрать. Высокая доля вытеснений при низкой доле попаданий означает, что вместимость мала, а поток запросов слишком разнообразен. Заметная доля объединённых обращений подтверждает, что устранение лавины было не теоретическим соображением.</p>
+<p data-level="3">Доля попаданий ниже нескольких процентов обычно означает, что кэш не окупает ни памяти, ни сложности. Порог, однако, задаётся не самой долей, а стоимостью промаха: там, где промах стоит обращения к языковой модели, окупается и один процент, а там, где он стоит чтения из памяти, не окупается и десять. Высокая доля вытеснений при низкой доле попаданий означает, что вместимость мала, а поток запросов слишком разнообразен. Заметная доля объединённых обращений подтверждает, что устранение лавины было не теоретическим соображением.</p>
 
 <div class="warn" data-level="3"><b>Кэш как источник ошибок</b>Кэш хранит и неверные ответы столь же охотно, как верные. Если система однажды ответила ошибочно и ответ сохранён, ошибка воспроизводится в точности при каждом повторении вопроса и выглядит как устойчивая неисправность модели. Отсюда требование: способ обойти кэш должен существовать и быть доступен при разборе жалоб.</div>
 
 <h4 data-level="3">Размыкатель цепи и его состояния</h4>
 
-<p data-level="3">Слой, обозначенный на диаграмме 9 как размыкатель, обычно имеет три состояния, а не два. Замкнутое состояние пропускает обращения. Разомкнутое отвергает их немедленно. Между ними находится третье, в котором пропускается одно пробное обращение: его исход и решает, вернуться ли к первому состоянию или к второму.</p>
+<p data-level="3">Слой, обозначенный на диаграмме 9 как размыкатель, обычно имеет три состояния, а не два. Замкнутое состояние пропускает обращения. Разомкнутое отвергает их немедленно. Между ними находится третье, в котором пропускается одно пробное обращение: его исход и решает, вернуться ли к первому состоянию или к второму. Сам приём предложен Найгардом в книге «Release It!», а формулировку с третьим, полуоткрытым состоянием дал Фаулер.<a class="src" href="https://martinfowler.com/bliki/CircuitBreaker.html" target="_blank" rel="noreferrer">Fowler, Circuit Breaker, 2014</a></p>
 
 <p data-level="3">Отсутствие третьего состояния порождает выбор между двумя нехорошими исходами. Если цепь размыкается навсегда, восстановившаяся служба остаётся неиспользуемой. Если она замыкается по истечении срока безусловно, накопившиеся обращения обрушиваются на едва поднявшуюся службу разом. Пробное обращение разрешает противоречие ровно потому, что оно одно.</p>
 
@@ -4516,7 +4516,7 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
     return [Fused(chunk_id=cid, score=score, sources=origins[cid]) for cid, score in best]</code></pre>
       <div class="gloss" data-level="2">
         <div><span class="at">строка 11</span><p>Параметр <code>strict</code> у функции <code>zip</code>, доступный начиная с версии 3.10, возбуждает исключение при разной длине последовательностей. Без него несоответствие числа весов числу источников привело бы к молчаливому отбрасыванию последних.</p></div>
-        <div><span class="at">строка 13</span><p>Постоянная в знаменателе сглаживает разницу между верхними местами. При её отсутствии первое место давало бы вдвое больший вклад, чем второе, и один источник решал бы исход. Общепринятое значение равно шестидесяти и восходит к работе, в которой приём был предложен.</p></div>
+        <div><span class="at">строка 13</span><p>Постоянная в знаменателе сглаживает разницу между верхними местами. При её отсутствии первое место давало бы вдвое больший вклад, чем второе, и один источник решал бы исход. Общепринятое значение равно шестидесяти и восходит к работе Кормака, Кларка и Бюттхера, в которой приём был предложен: именно шестьдесят дало там лучший средний результат на проверочных наборах.</p></div>
         <div><span class="at">строка 14</span><p>Перечень источников сохраняется намеренно. Документ, найденный тремя источниками из четырёх, заслуживает большего доверия, и это сведение пригодится при переранжировании и при объяснении выдачи.</p></div>
         <div><span class="at">строка 15</span><p>Функция <code>nlargest</code> отбирает верхние элементы за один проход, удерживая кучу размером <code>k</code>. Полная сортировка здесь не нужна.</p></div>
       </div>
@@ -4584,9 +4584,9 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
 
 <p data-level="2">Постоянная в знаменателе управляет тем, насколько сильно верхние места отличаются от нижних. При малом значении вклад первого места резко превосходит остальные, и слияние приближается к выбору лучшего источника. При большом значении вклады выравниваются, и слияние приближается к подсчёту числа источников, нашедших документ.</p>
 
-<p data-level="2">Значение шестьдесят получено на общедоступных наборах вопросов и служит разумной отправной точкой. Подбирать его по собственным данным имеет смысл лишь при наличии размеченного набора, о котором говорит <a href="#ch-15" data-secref="15">глава 15</a>; подбор на глаз обычно ухудшает выдачу, поскольку изменения незаметны без измерения.</p>
+<p data-level="2">Значение шестьдесят получено на общедоступных наборах вопросов и служит разумной отправной точкой. Подбирать его по собственным данным имеет смысл лишь при наличии размеченного набора, о котором говорит <a href="#ch-15" data-secref="15">глава 15</a>; подбор на глаз обычно ухудшает выдачу, поскольку изменения незаметны без измерения.<a class="src" href="https://research.google/pubs/reciprocal-rank-fusion-outperforms-condorcet-and-individual-rank-learning-methods/" target="_blank" rel="noreferrer">Cormack, Clarke, Büttcher, SIGIR 2009</a></p>
 
-<p data-level="3">Веса источников уместны там, где один источник заведомо надёжнее другого на данной предметной области. Их следует применять сдержанно: вес, отличный от единицы более чем вдвое, обычно означает, что слабый источник стоит не ослаблять, а исключить.</p>
+<p data-level="3">Веса источников уместны там, где один источник заведомо надёжнее другого на данной предметной области. Применять их следует сдержанно, и мера сдержанности зависит от того, откуда вес взят. Вес, подобранный на размеченном наборе, оправдан измерением и может оказаться любым. Вес, назначенный на глаз, заслуживает подозрения уже при отклонении от единицы вдвое: обычно он означает, что слабый источник стоит не ослаблять, а исключить.</p>
 
 <h3 id="s-11-4"><span class="num">11.4</span>Позднее взаимодействие представлений</h3>
 
@@ -4599,7 +4599,7 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
 
 <dl class="def">
 <dt>Позднее взаимодействие представлений <span class="en">(late interaction)</span></dt>
-<dd>Способ оценки близости, при котором запрос и документ представляются не одним вектором, а набором векторов, а оценка вычисляется как сумма по элементам запроса от наибольшей близости соответствующего элемента к какому-либо элементу документа. Взаимодействие названо поздним потому, что происходит при сравнении, а не при построении представлений.</dd>
+<dd>Способ оценки близости, при котором запрос и документ представляются не одним вектором, а набором векторов, а оценка вычисляется как сумма по элементам запроса от наибольшей близости соответствующего элемента к какому-либо элементу документа. Взаимодействие названо поздним потому, что происходит при сравнении, а не при построении представлений.<a class="src" href="https://arxiv.org/abs/2004.12832" target="_blank" rel="noreferrer">Khattab, Zaharia, ColBERT, SIGIR 2020</a></dd>
 </dl>
 
 <p>Различие с обычным плотным поиском состоит в том, что один вектор на документ вынужден усреднять всё его содержание, и редкое, но решающее слово растворяется в среднем. Набор векторов сохраняет возможность точного соответствия отдельным элементам.</p>
@@ -4935,7 +4935,7 @@ def budgeted_walk(graph: Graph, seeds: dict[str, float], *,
 
 <dl class="def">
 <dt>Персонализированный вектор значимости <span class="en">(personalized PageRank)</span></dt>
-<dd>Распределение вероятности пребывания блуждающего по графу, который с некоторой вероятностью на каждом шаге возвращается не в произвольную вершину, а в одну из заданных. Даёт меру близости всех вершин графа к заданному набору.</dd>
+<dd>Распределение вероятности пребывания блуждающего по графу, который с некоторой вероятностью на каждом шаге возвращается не в произвольную вершину, а в одну из заданных. Даёт меру близости всех вершин графа к заданному набору.<a class="src" href="https://nlp.stanford.edu/pubs/haveliwala2003personalizing.pdf" target="_blank" rel="noreferrer">Haveliwala, Kamvar, Jeh, Personalizing PageRank, 2003</a></dd>
 </dl>
 
 <figure class="code" data-fold="0" data-level="2">
@@ -5750,7 +5750,7 @@ async def partial_scores(parts: AsyncIterator[str]) -> AsyncIterator[DraftScore]
 
 <p data-level="3">Схема входит в инструкцию модели и потому занимает место в контексте. Схема с полусотней полей, вложенными объектами и подробными описаниями способна занять больше места, чем извлечённые фрагменты, ради которых всё затевалось.</p>
 
-<p data-level="3">Кроме того, чем сложнее требуемая форма, тем большая часть внимания модели уходит на её соблюдение, а не на существо задачи. Наблюдение, подтверждаемое опытом многих: одна плоская схема из пяти полей даёт ответы лучше, чем одна вложенная из тридцати, даже когда вторая выражает задачу точнее.</p>
+<p data-level="3">Кроме того, чем сложнее требуемая форма, тем большая часть порождения уходит на её соблюдение. Механизм здесь тот же, что описан выше: каждое ограничение сужает выбор допустимых продолжений, а вложенность умножает число мест, где ограничение действует. Отсюда правило, которое стоит проверить на своих задачах, а не принимать на веру: при прочих равных предпочитайте плоскую схему из нескольких полей вложенной из десятков, и сравнивайте выдачу на размеченном наборе, прежде чем усложнять форму.</p>
 
 <p data-level="3">Отсюда правило соразмерности: схема описывает решение, а не всё, что о нём известно. Сведения, выводимые системой самостоятельно, в схему не включаются. Номер черновика, длина текста, время обработки известны системе и не должны запрашиваться у модели.</p>
 
@@ -5956,7 +5956,7 @@ def stage(name: str, **fields: object):
 
 <dl class="def">
 <dt>Внедрение через извлекаемое содержимое <span class="en">(indirect prompt injection)</span></dt>
-<dd>Нападение, при котором распоряжение, обращённое к модели, размещается не в запросе пользователя, а в документе корпуса. Извлечение помещает документ в инструкцию, и распоряжение достигает модели, минуя проверки, применяемые к пользовательскому вводу.</dd>
+<dd>Нападение, при котором распоряжение, обращённое к модели, размещается не в запросе пользователя, а в документе корпуса. Извлечение помещает документ в инструкцию, и распоряжение достигает модели, минуя проверки, применяемые к пользовательскому вводу.<a class="src" href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noreferrer">Greshake и соавторы, 2023</a></dd>
 </dl>
 
 <figure class="dia">
@@ -6045,6 +6045,8 @@ def safe_number(expression: str) -> float:
 </div>
 </figure>
 
+<p data-level="3">Изложенный подход совпадает с тем, который принят в общепризнанном перечне угроз для приложений на языковых моделях. Внедрение через содержимое числится там первой позицией, рекомендуемым ответом названа защита в глубину с выдачей инструментам наименьших достаточных прав, и там же прямо оговорено, что ни извлечение, ни дообучение не закрывают этот класс угроз полностью.<a class="src" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noreferrer">OWASP Top 10 for LLM Applications, LLM01</a></p>
+
 <div class="warn"><b>Типичная ошибка</b>Выдавать инструменту те же права, что имеет служба целиком. Инструмент, читающий справочник, не нуждается в праве записи; инструмент, ищущий по корпусу, не нуждается в доступе к учётным данным. Права выдаются под задачу, и тогда подчинение модели подложному распоряжению ограничено тем, что инструмент вообще способен сделать.</div>
 
 <h3 id="s-15-5"><span class="num">15.5</span>Проверка недетерминированной системы</h3>
@@ -6094,7 +6096,7 @@ def test_agreement_wins(lists: list[list[str]]) -> None:
 
 <dl class="def" data-level="2">
 <dt>Полнота выдачи на глубине <span class="en">(recall@k)</span></dt>
-<dd>Доля подходящих документов, попавших в первые <code>k</code> позиций выдачи, от общего числа подходящих. Основная мера для отбора кандидатов, поскольку то, что не извлечено, не может быть использовано порождением.</dd>
+<dd>Доля подходящих документов, попавших в первые <code>k</code> позиций выдачи, от общего числа подходящих. Основная мера для отбора кандидатов, поскольку то, что не извлечено, не может быть использовано порождением.<a class="src" href="https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html" target="_blank" rel="noreferrer">Manning, Raghavan, Schütze, Introduction to Information Retrieval, 2008</a></dd>
 </dl>
 <dl class="def" data-level="2">
 <dt>Средний обратный ранг <span class="en">(mean reciprocal rank)</span></dt>
@@ -6598,6 +6600,29 @@ def test_context_fencing(payload: str) -> None:
 <p>Всё перечисленное исправлено. Листинг с именем файла в заголовке теперь самодостаточен по импортам стандартной библиотеки и внешних пакетов; имена предметной модели намеренно остаются обозначениями и получают типы в наборе заглушек. Листинги без имени остаются выдержками и опираются на окружение соседнего листинга, что видно по отсутствию заголовка.</p>
 
 <p>Исполнены листинги не были: обращения к внешним службам заменить нечем, а исполнение без них ничего не подтвердило бы. Кроме того, один листинг помечен как требующий версии 3.14 и на более ранней не заработает; проверка типов ведётся с расчётом на эту версию.</p>
+
+<h3 id="s-e-6"><span class="num">E.6</span>Источники инженерных приёмов</h3>
+
+<p>Часть приёмов, разбираемых в пособии, имеет установимое авторство. Ниже названы работы, в которых эти приёмы были предложены. В тексте ссылка стоит на месте разбора, рядом с определением приёма, чтобы читателю не приходилось искать её в приложении.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Приём</th><th>Работа</th><th>Глава</th></tr></thead>
+<tbody>
+<tr><td>Обратное ранговое слияние и постоянная шестьдесят</td><td><a href="https://research.google/pubs/reciprocal-rank-fusion-outperforms-condorcet-and-individual-rank-learning-methods/" target="_blank" rel="noreferrer">Cormack, Clarke, Büttcher, SIGIR 2009</a></td><td><a href="#ch-11">11</a></td></tr>
+<tr><td>Экспоненциальная задержка со случайным разбросом</td><td><a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/" target="_blank" rel="noreferrer">Brooker, Exponential Backoff and Jitter, 2015</a></td><td><a href="#ch-8">8</a></td></tr>
+<tr><td>Размыкатель цепи и его полуоткрытое состояние</td><td>Nygard, «Release It!», 2007; формулировка с третьим состоянием: <a href="https://martinfowler.com/bliki/CircuitBreaker.html" target="_blank" rel="noreferrer">Fowler, Circuit Breaker, 2014</a></td><td><a href="#ch-8">8</a></td></tr>
+<tr><td>Позднее взаимодействие представлений и оценка наибольшего сходства</td><td><a href="https://arxiv.org/abs/2004.12832" target="_blank" rel="noreferrer">Khattab, Zaharia, ColBERT, SIGIR 2020</a></td><td><a href="#ch-11">11</a></td></tr>
+<tr><td>Персонализированный вектор значимости</td><td><a href="https://nlp.stanford.edu/pubs/haveliwala2003personalizing.pdf" target="_blank" rel="noreferrer">Haveliwala, Kamvar, Jeh, Personalizing PageRank, 2003</a></td><td><a href="#ch-12">12</a></td></tr>
+<tr><td>Внедрение через извлекаемое содержимое</td><td><a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noreferrer">Greshake и соавторы, 2023</a></td><td><a href="#ch-15">15</a></td></tr>
+<tr><td>Ограждения как защита в глубину</td><td><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noreferrer">OWASP Top 10 for LLM Applications, LLM01</a></td><td><a href="#ch-15">15</a></td></tr>
+<tr><td>Полнота выдачи на глубине и средний обратный ранг</td><td><a href="https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html" target="_blank" rel="noreferrer">Manning, Raghavan, Schütze, Introduction to Information Retrieval, 2008</a></td><td><a href="#ch-11">11</a>, <a href="#ch-15">15</a></td></tr>
+</tbody></table></div>
+
+<h4>Как читать утверждения пособия</h4>
+
+<p>Приведённые таблицы разделяют утверждения по способу проверки, и это разделение полезно держать в уме. Утверждения о языке и библиотеках сверены с официальной документацией и перечислены в разделах с E.1 по E.3. Утверждения о поведении кода проверены инструментами, о чём говорит раздел E.5. Приёмы с установимым авторством названы выше.</p>
+
+<p>Всё остальное представляет собой инженерное суждение, опирающееся на устройство разобранных механизмов. Там, где такое суждение выражено числом, текст называет условия, при которых число получено, и предлагает измерение вместо доверия: числовой порог зависит от стоимости ошибки в конкретной системе и потому не переносится между системами без проверки.</p>
 
 <div class="note">Всё, чего в таблицах выше нет, изложено по общему знанию предмета и проверено вычиткой, а не сверкой с документом. К таким местам относятся приёмы построения конвейеров, соображения о выборе между средствами и разборы наивных решений: они опираются не на утверждения о версиях, а на устройство самих механизмов, разобранное в тексте.</div>
 </section>
@@ -9575,7 +9600,7 @@ class SingleFlightCache[K, V]:
 
 <dl class="def">
 <dt>Exponential backoff with jitter</dt>
-<dd>The rule under which the delay before each next attempt grows as a power of the attempt number, while the actual value is drawn at random from the interval between zero and the computed ceiling. The randomness spreads out clients whose failures coincided.</dd>
+<dd>The rule under which the delay before each next attempt grows as a power of the attempt number, while the actual value is drawn at random from the interval between zero and the computed ceiling. The randomness spreads out clients whose failures coincided.<a class="src" href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/" target="_blank" rel="noreferrer">Brooker, Exponential Backoff and Jitter, 2015</a></dd>
 </dl>
 
 <figure class="code" data-fold="16">
@@ -9734,13 +9759,13 @@ class CacheStats:
         return self.joined / self.misses if self.misses else 0.0</code></pre>
 </figure>
 
-<p data-level="3">A hit rate below a few percent means the cache pays for neither its memory nor its complexity, and it should go. A high eviction rate at a low hit rate means the capacity is small and the request stream too varied. A noticeable joining share confirms that stampede elimination was no theoretical nicety.</p>
+<p data-level="3">A hit rate below a few percent usually means the cache pays for neither its memory nor its complexity. The threshold, though, is set not by the rate itself but by the cost of a miss: where a miss costs a call to a language model, even one percent pays for itself, and where it costs a read from memory, ten percent does not. A high eviction rate at a low hit rate means the capacity is small and the request stream too varied. A noticeable joining share confirms that stampede elimination was no theoretical nicety.</p>
 
 <div class="warn" data-level="3"><b>The cache as an error source</b>A cache stores wrong answers as readily as right ones. If the system once answered mistakenly and the answer was stored, the mistake reproduces exactly on every repetition of the question and looks like a stable model fault. Hence the requirement: a way to bypass the cache must exist and be at hand when complaints are investigated.</div>
 
 <h4 data-level="3">The circuit breaker and its states</h4>
 
-<p data-level="3">The layer marked as the breaker in Diagram 9 usually has three states, not two. Closed passes calls through. Open rejects them at once. Between them sits a third, which lets one probe call through: its outcome decides whether to return to the first state or the second.</p>
+<p data-level="3">The layer marked as the breaker in Diagram 9 usually has three states, not two. Closed passes calls through. Open rejects them at once. Between them sits a third, which lets one probe call through: its outcome decides whether to return to the first state or the second. The device itself was proposed by Nygard in <i>Release It!</i>, and the formulation with a third, half-open state is Fowler's.<a class="src" href="https://martinfowler.com/bliki/CircuitBreaker.html" target="_blank" rel="noreferrer">Fowler, Circuit Breaker, 2014</a></p>
 
 <p data-level="3">Omitting the third state forces a choice between two poor outcomes. If the circuit opens for good, a recovered service goes unused. If it recloses on a timer unconditionally, the backlog of calls crashes onto a barely risen service all at once. The probe call resolves the dilemma precisely because it is single.</p>
 
@@ -10665,9 +10690,9 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
 
 <p data-level="2">The denominator's constant governs how sharply the top places stand out from the rest. At a small value the first place's contribution dwarfs the others, and fusion approaches picking the best source. At a large value the contributions even out, and fusion approaches counting the sources that found the document.</p>
 
-<p data-level="2">The value sixty was obtained on public question sets and serves as a sound starting point. Tuning it on your own data makes sense only with a labelled set of the kind <a href="#ch-15" data-secref="15">Chapter 15</a> describes; tuning by eye usually worsens the results, since the shifts are invisible without measurement.</p>
+<p data-level="2">The value sixty was obtained on public question sets and serves as a sound starting point. Tuning it on your own data makes sense only with a labelled set of the kind <a href="#ch-15" data-secref="15">Chapter 15</a> describes; tuning by eye usually worsens the results, since the shifts are invisible without measurement.<a class="src" href="https://research.google/pubs/reciprocal-rank-fusion-outperforms-condorcet-and-individual-rank-learning-methods/" target="_blank" rel="noreferrer">Cormack, Clarke, Büttcher, SIGIR 2009</a></p>
 
-<p data-level="3">Source weights fit where one source is demonstrably more dependable on the given domain. Use them sparingly: a weight off unity by more than a factor of two usually means the weak source wants removing, not muting.</p>
+<p data-level="3">Source weights fit where one source is demonstrably more dependable on the given domain. Use them sparingly, and note that what counts as sparing depends on where the weight came from. A weight fitted on a labelled set is justified by measurement and may be of any size. A weight assigned by eye deserves suspicion once it departs from unity by a factor of two: it usually means the weak source wants removing, not muting.</p>
 
 <h3 id="s-11-4"><span class="num">11.4</span>Late Interaction</h3>
 
@@ -10680,7 +10705,7 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
 
 <dl class="def">
 <dt>Late interaction</dt>
-<dd>A similarity scheme in which query and document are represented not by one vector each but by sets of vectors, and the score is the sum, over the query's tokens, of each token's maximal similarity to any document token. The interaction is called late because it happens at comparison time, not at embedding time.</dd>
+<dd>A similarity scheme in which query and document are represented not by one vector each but by sets of vectors, and the score is the sum, over the query's tokens, of each token's maximal similarity to any document token. The interaction is called late because it happens at comparison time, not at embedding time.<a class="src" href="https://arxiv.org/abs/2004.12832" target="_blank" rel="noreferrer">Khattab, Zaharia, ColBERT, SIGIR 2020</a></dd>
 </dl>
 
 <p>The difference from ordinary dense search: a single vector per document must average all its content, and a rare but decisive word dissolves into the mean. A set of vectors keeps the possibility of an exact match to individual tokens.</p>
@@ -11016,7 +11041,7 @@ def budgeted_walk(graph: Graph, seeds: dict[str, float], *,
 
 <dl class="def">
 <dt>Personalized PageRank</dt>
-<dd>The stationary distribution of a random walker over the graph who, at each step, returns with some probability not to an arbitrary node but to one of a designated set. It yields a measure of every node's closeness to that set.</dd>
+<dd>The stationary distribution of a random walker over the graph who, at each step, returns with some probability not to an arbitrary node but to one of a designated set. It yields a measure of every node's closeness to that set.<a class="src" href="https://nlp.stanford.edu/pubs/haveliwala2003personalizing.pdf" target="_blank" rel="noreferrer">Haveliwala, Kamvar, Jeh, Personalizing PageRank, 2003</a></dd>
 </dl>
 
 <figure class="code" data-fold="0" data-level="2">
@@ -11847,7 +11872,7 @@ async def partial_scores(parts: AsyncIterator[str]) -> AsyncIterator[DraftScore]
 
 <p data-level="3">The schema rides inside the model's prompt and so occupies context. A schema of fifty fields, nested objects, and verbose descriptions can outweigh the retrieved chunks the whole exercise was about.</p>
 
-<p data-level="3">Moreover, the more intricate the demanded form, the more of the model's attention goes to keeping it and the less to the task. The observation, confirmed widely: one flat schema of five fields yields better answers than one nested schema of thirty, even when the latter states the task more exactly.</p>
+<p data-level="3">Moreover, the more intricate the demanded form, the more of the generation goes into keeping it. The mechanism is the one described above: every constraint narrows the choice of admissible continuations, and nesting multiplies the places where a constraint applies. Hence a rule worth testing on your own tasks rather than taking on trust: all else equal, prefer a flat schema of a few fields to a nested one of dozens, and compare the results on a labelled set before complicating the form.</p>
 
 <p data-level="3">Hence the proportionality rule: the schema describes the decision, not everything known about it. What the system can derive on its own does not belong in the schema. The draft's index, the text's length, the processing time are known to the system and must not be requested from the model.</p>
 
@@ -12037,7 +12062,7 @@ def stage(name: str, **fields: object):
 
 <dl class="def">
 <dt>Indirect prompt injection</dt>
-<dd>An attack in which an instruction addressed to the model is planted not in the user's query but in a corpus document. Retrieval places the document into the prompt, and the instruction reaches the model past every check applied to user input.</dd>
+<dd>An attack in which an instruction addressed to the model is planted not in the user's query but in a corpus document. Retrieval places the document into the prompt, and the instruction reaches the model past every check applied to user input.<a class="src" href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noreferrer">Greshake et al., 2023</a></dd>
 </dl>
 
 <figure class="dia">
@@ -12126,6 +12151,8 @@ def safe_number(expression: str) -> float:
 </div>
 </figure>
 
+<p data-level="3">The approach set out here agrees with the one taken in the established threat list for applications built on language models. Injection through content stands first on that list, the recommended answer is defence in depth with tools granted the least permission that suffices, and the list states outright that neither retrieval nor fine-tuning closes this class of threat completely.<a class="src" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noreferrer">OWASP Top 10 for LLM Applications, LLM01</a></p>
+
 <div class="warn"><b>Common mistake</b>Granting a tool the permissions of the whole service. A tool that reads a directory needs no write permission; a tool that searches the corpus needs no access to credentials. Permissions are granted per task, and then a model's compliance with a planted instruction is bounded by what the tool can do at all.</div>
 
 <h3 id="s-15-5"><span class="num">15.5</span>Testing a Nondeterministic System</h3>
@@ -12175,7 +12202,7 @@ def test_agreement_wins(lists: list[list[str]]) -> None:
 
 <dl class="def" data-level="2">
 <dt>Recall at k</dt>
-<dd>The share of relevant documents that appear in the output's first <code>k</code> positions, out of all relevant ones. The principal measure for candidate selection, since what is not retrieved cannot be used by generation.</dd>
+<dd>The share of relevant documents that appear in the output's first <code>k</code> positions, out of all relevant ones. The principal measure for candidate selection, since what is not retrieved cannot be used by generation.<a class="src" href="https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html" target="_blank" rel="noreferrer">Manning, Raghavan, Schütze, Introduction to Information Retrieval, 2008</a></dd>
 </dl>
 <dl class="def" data-level="2">
 <dt>Mean reciprocal rank</dt>
@@ -12679,6 +12706,29 @@ def test_context_fencing(payload: str) -> None:
 <p>Everything listed has been corrected. A listing with a file name in its header is now self-sufficient in its standard library and third-party imports; the domain names deliberately remain placeholders and receive their types in the stub set. Listings without a file name remain excerpts and lean on the neighbouring listing's surroundings, which the absent header signals.</p>
 
 <p>The listings were not executed: the external service calls have nothing to stand in for them, and execution without them would certify nothing. One listing, moreover, is marked as requiring version 3.14 and will not run on anything earlier; the type check targets that version.</p>
+
+<h3 id="s-e-6"><span class="num">E.6</span>Sources of the Engineering Devices</h3>
+
+<p>Some of the devices this book takes apart have an ascertainable author. The works in which they were proposed are named below. In the text the reference sits at the point of discussion, beside the device's definition, so that the reader need not go hunting through an appendix for it.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Device</th><th>Work</th><th>Chapter</th></tr></thead>
+<tbody>
+<tr><td>Reciprocal rank fusion and the constant sixty</td><td><a href="https://research.google/pubs/reciprocal-rank-fusion-outperforms-condorcet-and-individual-rank-learning-methods/" target="_blank" rel="noreferrer">Cormack, Clarke, Büttcher, SIGIR 2009</a></td><td><a href="#ch-11">11</a></td></tr>
+<tr><td>Exponential backoff with jitter</td><td><a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/" target="_blank" rel="noreferrer">Brooker, Exponential Backoff and Jitter, 2015</a></td><td><a href="#ch-8">8</a></td></tr>
+<tr><td>The circuit breaker and its half-open state</td><td>Nygard, <i>Release It!</i>, 2007; the three-state formulation: <a href="https://martinfowler.com/bliki/CircuitBreaker.html" target="_blank" rel="noreferrer">Fowler, Circuit Breaker, 2014</a></td><td><a href="#ch-8">8</a></td></tr>
+<tr><td>Late interaction and the maximal-similarity score</td><td><a href="https://arxiv.org/abs/2004.12832" target="_blank" rel="noreferrer">Khattab, Zaharia, ColBERT, SIGIR 2020</a></td><td><a href="#ch-11">11</a></td></tr>
+<tr><td>Personalized PageRank</td><td><a href="https://nlp.stanford.edu/pubs/haveliwala2003personalizing.pdf" target="_blank" rel="noreferrer">Haveliwala, Kamvar, Jeh, Personalizing PageRank, 2003</a></td><td><a href="#ch-12">12</a></td></tr>
+<tr><td>Indirect prompt injection</td><td><a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noreferrer">Greshake et al., 2023</a></td><td><a href="#ch-15">15</a></td></tr>
+<tr><td>Safeguards as defence in depth</td><td><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noreferrer">OWASP Top 10 for LLM Applications, LLM01</a></td><td><a href="#ch-15">15</a></td></tr>
+<tr><td>Recall at k and mean reciprocal rank</td><td><a href="https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html" target="_blank" rel="noreferrer">Manning, Raghavan, Schütze, Introduction to Information Retrieval, 2008</a></td><td><a href="#ch-11">11</a>, <a href="#ch-15">15</a></td></tr>
+</tbody></table></div>
+
+<h4>How to read this book's claims</h4>
+
+<p>The tables above sort the claims by how each was verified, and the sorting is worth keeping in mind. Claims about the language and its libraries were checked against official documentation and are listed in sections E.1 through E.3. Claims about the behaviour of code were checked by tooling, as section E.5 records. Devices with an ascertainable author are named above.</p>
+
+<p>Everything else is engineering judgment resting on the mechanisms the text takes apart. Wherever such judgment is expressed as a number, the text states the conditions under which the number holds and asks for measurement in place of trust: a numeric threshold depends on the cost of an error in the particular system and therefore does not carry between systems unchecked.</p>
 
 <div class="note">Whatever these tables omit rests on general knowledge of the subject, verified by review rather than against a document. That covers the pipeline-building devices, the considerations for choosing among tools, and the naive-solution walkthroughs: they rest not on version claims but on the mechanisms themselves, taken apart in the text.</div>
 </section>

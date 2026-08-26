@@ -29,6 +29,7 @@ def chapters(text: str):
 def main() -> None:
     text = SRC.read_text(encoding="utf-8")
     where = chapters(text)
+    en_start = text.find('<div class="locale" data-locale="en">')
     OUT.mkdir(exist_ok=True)
     for old in OUT.glob("*.py"):
         if old.name != "stubs.py":       # заглушки сопровождаются вручную
@@ -43,11 +44,13 @@ def main() -> None:
             continue
         source = html.unescape(code.group(1)).strip("\n")
         chapter = where(match.start())
-        counters[chapter] = counters.get(chapter, 0) + 1
+        locale_key = ("en:" if 0 <= en_start <= match.start() else "ru:") + chapter
+        counters[locale_key] = counters.get(locale_key, 0) + 1
         named = FILENAME.search(body)
         stem = named.group(1).rsplit("/", 1)[-1].removesuffix(".py") if named else "listing"
         stem = re.sub(r"[^a-z0-9_]", "_", stem.lower())
-        path = OUT / f"{chapter.replace('-', '_')}_{counters[chapter]:02d}_{stem}.py"
+        prefix = "en_" if 0 <= en_start <= match.start() else ""
+        path = OUT / f"{prefix}{chapter.replace('-', '_')}_{counters[locale_key]:02d}_{stem}.py"
         path.write_text(source + "\n", encoding="utf-8")
         written += 1
     print(f"извлечено листингов: {written}")

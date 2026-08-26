@@ -3383,7 +3383,7 @@ from typing import Any
 
 _LAZY = {"GraphTool": ".graph", "SqlTool": ".sql", "VisionTool": ".vision"}
 
-def __getattr__(name: str) -> Any:          # <a class="pep" href="https://peps.python.org/pep-0562/" target="_blank" rel="noreferrer">PEP 562</a>: обращение к атрибуту модуля
+def __getattr__(name: str) -> Any:          # PEP 562: обращение к атрибуту модуля
     module = _LAZY.get(name)
     if module is None:
         raise AttributeError(f"модуль {__name__} не содержит {name!r}")
@@ -4914,7 +4914,7 @@ match kind:
 <figcaption><span class="file">patterns.py</span></figcaption>
 <pre><code>match payload:
     case {"tool": str(name), "args": dict(args)}:      # проверка типов внутри
-        return call_tool(name, args)
+        return await call_tool(name, args)
     case {"answer": str(text), **rest} if not rest:    # никаких иных ключей
         return Answer(text=text)
     case [first, *others]:                             # непустая последовательность
@@ -5245,7 +5245,9 @@ async def partial_scores(parts: AsyncIterator[str]) -> AsyncIterator[DraftScore]
 
 <figure class="code" data-fold="0" data-level="3">
 <figcaption><span class="file">refusal.py</span></figcaption>
-<pre><code>from pydantic import BaseModel, Field, model_validator
+<pre><code>from typing import Self
+
+from pydantic import BaseModel, Field, model_validator
 
 class Extraction(BaseModel):
     """Извлечение сведения из фрагмента. Отсутствие сведения является ответом."""
@@ -5254,7 +5256,7 @@ class Extraction(BaseModel):
     quote: str | None = Field(default=None, description="дословная выдержка")
 
     @model_validator(mode="after")
-    def coherent(self) -> "Extraction":
+    def coherent(self) -> Self:
         if self.found and not (self.value and self.quote):
             raise ValueError("при found=true требуются значение и выдержка")
         if not self.found and (self.value or self.quote):

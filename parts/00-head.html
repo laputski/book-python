@@ -66,6 +66,11 @@ body{
 @media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important; scroll-behavior:auto !important}}
 html{scroll-behavior:smooth; scroll-padding-top:5rem}
 
+.locale{display:none}
+html[data-lang="ru"] .locale[data-locale="ru"]{display:block}
+html[data-lang="en"] .locale[data-locale="en"]{display:block}
+html[lang="en"] .src::before{content:"source: "}
+
 .skip{position:absolute; left:-9999px; top:0; z-index:200; background:var(--paper);
   border:1px solid var(--line-strong); padding:.6rem 1rem; font-family:var(--sans); font-size:.85rem}
 .skip:focus{left:.75rem; top:.75rem}
@@ -475,29 +480,40 @@ a.pyver:hover{color:var(--accent); border-color:var(--accent)}
 .print-only{display:none}
 </style>
 
-<a class="skip" href="#main">Пропустить навигацию</a>
+<script>
+(function () {
+  var lang = "ru";
+  try { lang = localStorage.getItem("lang") || "ru"; } catch (e) {}
+  if (lang !== "en") lang = "ru";
+  document.documentElement.setAttribute("data-lang", lang);
+  document.documentElement.lang = lang;
+})();
+</script>
 
-<div class="shell" lang="ru">
+<a class="skip" href="#main" data-en="Skip navigation">Пропустить навигацию</a>
+
+<div class="shell">
 <header class="topbar">
-  <button class="ctl burger" id="burger" aria-label="Оглавление" aria-expanded="false">☰</button>
+  <button class="ctl burger" id="burger" aria-label="Оглавление" data-en-aria-label="Table of contents" aria-expanded="false">☰</button>
   <span class="brand">
     <span class="mark" aria-hidden="true"><i class="on"></i><i></i><i class="on2"></i><i></i><i></i><i class="on3"></i><i></i><i class="on"></i><i></i><i class="on2"></i><i></i><i></i></span>
-    <span class="bt">Продвинутый Python для RAG</span>
+    <span class="bt" data-en="Advanced Python for RAG">Продвинутый Python для RAG</span>
   </span>
   <span class="spacer"></span>
-  <span class="seglabel">Подробность</span>
-  <div class="seg only-wide" role="group" aria-label="Уровень подробности изложения">
-    <button data-lvl="1" aria-pressed="false" title="Только определения, изложение механизма, диаграммы и итоги">Обзор</button>
-    <button data-lvl="2" aria-pressed="true" title="Дополнительно: разбор наивных решений, пояснения к строкам кода, вопросы">Стандарт</button>
-    <button data-lvl="3" aria-pressed="false" title="Дополнительно: обоснования, краевые случаи, внутреннее устройство">Полный</button>
+  <span class="seglabel" data-en="Detail">Подробность</span>
+  <div class="seg only-wide" role="group" aria-label="Уровень подробности изложения" data-en-aria-label="Detail level">
+    <button data-lvl="1" aria-pressed="false" title="Только определения, изложение механизма, диаграммы и итоги" data-en="Overview" data-en-title="Definitions, core exposition, diagrams, and takeaways only">Обзор</button>
+    <button data-lvl="2" aria-pressed="true" title="Дополнительно: разбор наивных решений, пояснения к строкам кода, вопросы" data-en="Standard" data-en-title="Adds naive-solution walkthroughs, line annotations, and self-check questions">Стандарт</button>
+    <button data-lvl="3" aria-pressed="false" title="Дополнительно: обоснования, краевые случаи, внутреннее устройство" data-en="Full" data-en-title="Adds proofs, edge cases, and interpreter internals">Полный</button>
   </div>
-  <button class="ctl only-narrow" id="lvlcycle" title="Уровень подробности изложения">Стандарт</button>
-  <button class="ctl" id="find" aria-label="Поиск по учебнику">Поиск <kbd>/</kbd></button>
-  <button class="ctl only-wide" id="printbtn">Печать</button>
+  <button class="ctl only-narrow" id="lvlcycle" title="Уровень подробности изложения" data-en-title="Detail level">Стандарт</button>
+  <button class="ctl" id="find" aria-label="Поиск по учебнику" data-en-aria-label="Search the book"><span data-en="Search">Поиск</span> <kbd>/</kbd></button>
+  <button class="ctl only-wide" id="printbtn" data-en="Print">Печать</button>
+  <button class="ctl" id="langbtn" aria-label="Switch language">EN</button>
   <button class="ctl" id="theme" aria-label="Переключить тему">◐</button>
   <div class="progress" id="progress"></div>
 </header>
 
-<nav class="rail" id="rail" aria-label="Оглавление"></nav>
+<nav class="rail" id="rail" aria-label="Оглавление" data-en-aria-label="Table of contents"></nav>
 
 <main class="ribbon" id="main">

@@ -6,11 +6,11 @@ from typing import Any
 
 async def _excerpt() -> Any:
     match payload:
-        case {"tool": str(name), "args": dict(args)}:      # проверка типов внутри
+        case {"tool": str(name), "args": dict(args)}:      # type checks inside
             return await call_tool(name, args)
-        case {"answer": str(text), **rest} if not rest:    # никаких иных ключей
+        case {"answer": str(text), **rest} if not rest:    # no other keys allowed
             return Answer(text=text)
-        case [first, *others]:                             # непустая последовательность
+        case [first, *others]:                             # a nonempty sequence
             return merge(first, others)
         case _:
-            raise ValueError("неизвестная форма ответа")
+            raise ValueError("unrecognized reply shape")

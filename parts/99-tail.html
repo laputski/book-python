@@ -2,40 +2,40 @@
 </main>
 </div>
 
-<div class="dlg" id="search" role="dialog" aria-modal="true" aria-label="Поиск по учебнику">
+<div class="dlg" id="search" role="dialog" aria-modal="true" aria-label="Поиск по учебнику" data-en-aria-label="Search the book">
   <div class="box">
-    <input id="q" type="search" placeholder="Искать раздел, термин или диаграмму…" autocomplete="off" spellcheck="false">
+    <input id="q" type="search" placeholder="Искать раздел, термин или диаграмму…" data-en-placeholder="Find a section, term, or diagram…" autocomplete="off" spellcheck="false">
     <div class="res" id="res"></div>
-    <div class="foot"><span>↑ ↓ выбор</span><span>Enter перейти</span><span>Esc закрыть</span></div>
+    <div class="foot"><span data-en="↑ ↓ select">↑ ↓ выбор</span><span data-en="Enter go">Enter перейти</span><span data-en="Esc close">Esc закрыть</span></div>
   </div>
 </div>
 
-<div class="dlg print" id="printdlg" role="dialog" aria-modal="true" aria-label="Параметры печати">
+<div class="dlg print" id="printdlg" role="dialog" aria-modal="true" aria-label="Параметры печати" data-en-aria-label="Print options">
   <div class="box">
-    <h3>Печать и сохранение в PDF</h3>
-    <p class="sub">Выберите, что печатать и насколько подробно.</p>
+    <h3 data-en="Print and save as PDF">Печать и сохранение в PDF</h3>
+    <p class="sub" data-en="Choose what to print and at which level of detail.">Выберите, что печатать и насколько подробно.</p>
     <fieldset>
-      <legend>Что печатать</legend>
+      <legend data-en="What to print">Что печатать</legend>
       <label class="opt"><input type="radio" name="scope" value="all" checked>
-        <span class="what">Всё пособие</span><span class="which" data-fill="all"></span></label>
+        <span class="what" data-en="The whole book">Всё пособие</span><span class="which" data-fill="all"></span></label>
       <label class="opt"><input type="radio" name="scope" value="part">
-        <span class="what">Текущую часть</span><span class="which" data-fill="part"></span></label>
+        <span class="what" data-en="The current part">Текущую часть</span><span class="which" data-fill="part"></span></label>
       <label class="opt"><input type="radio" name="scope" value="chapter">
-        <span class="what">Текущую главу</span><span class="which" data-fill="chapter"></span></label>
+        <span class="what" data-en="The current chapter">Текущую главу</span><span class="which" data-fill="chapter"></span></label>
     </fieldset>
     <fieldset>
-      <legend>Насколько подробно</legend>
+      <legend data-en="How much detail">Насколько подробно</legend>
       <label class="opt"><input type="radio" name="plvl" value="1">
-        <span class="what">Обзор</span><span class="which">определения и итоги</span></label>
+        <span class="what" data-en="Overview">Обзор</span><span class="which" data-en="definitions and takeaways">определения и итоги</span></label>
       <label class="opt"><input type="radio" name="plvl" value="2">
-        <span class="what">Стандарт</span><span class="which">с разборами и вопросами</span></label>
+        <span class="what" data-en="Standard">Стандарт</span><span class="which" data-en="with walkthroughs and questions">с разборами и вопросами</span></label>
       <label class="opt"><input type="radio" name="plvl" value="3" checked>
-        <span class="what">Полный</span><span class="which">со всеми обоснованиями</span></label>
+        <span class="what" data-en="Full">Полный</span><span class="which" data-en="with every justification">со всеми обоснованиями</span></label>
     </fieldset>
-    <p class="hint">Чтобы получить файл PDF, выберите в открывшемся диалоге браузера принтер «Сохранить как PDF».</p>
+    <p class="hint" data-en="To get a PDF file, pick the “Save as PDF” printer in the browser dialog that opens.">Чтобы получить файл PDF, выберите в открывшемся диалоге браузера принтер «Сохранить как PDF».</p>
     <div class="row">
-      <button class="ctl" data-close>Отмена</button>
-      <button class="ctl primary" id="dopring">Печатать</button>
+      <button class="ctl" data-close data-en="Cancel">Отмена</button>
+      <button class="ctl primary" id="dopring" data-en="Print">Печатать</button>
     </div>
   </div>
 </div>
@@ -53,6 +53,80 @@ const store = {
 const root = document.documentElement;
 const main = document.getElementById("main");
 
+/* ── Локаль: активная версия остаётся, неактивная удаляется из документа ── */
+const LANG = root.getAttribute("data-lang") === "en" ? "en" : "ru";
+document.querySelectorAll(".locale").forEach(box => {
+  if (box.dataset.locale === LANG) box.replaceWith(...box.childNodes);
+  else box.remove();
+});
+if (LANG === "en") {
+  document.title = "Advanced Python for RAG";
+  document.querySelectorAll("[data-en]").forEach(el => { el.textContent = el.getAttribute("data-en"); });
+  document.querySelectorAll("[data-en-title]").forEach(el => { el.title = el.getAttribute("data-en-title"); });
+  document.querySelectorAll("[data-en-placeholder]").forEach(el => { el.placeholder = el.getAttribute("data-en-placeholder"); });
+  document.querySelectorAll("[data-en-aria-label]").forEach(el => { el.setAttribute("aria-label", el.getAttribute("data-en-aria-label")); });
+}
+
+/* Строки интерфейса, порождаемые сценарием */
+const L = LANG === "en" ? {
+  copy: "Copy", copied: "Copied", copyFail: "Failed",
+  showMore: n => "Show full listing, " + n + (n === 1 ? " more line" : " more lines"),
+  showLess: "Collapse listing",
+  railStart: "Start",
+  toastReveal: "This passage belongs to a deeper detail level; it is revealed for this chapter.",
+  toastOk: "Got it",
+  kinds: { "раздел": "section", "термин": "term", "диаграмма": "diagram", "упоминание": "mention" },
+  level: "level ",
+  searchHint: "Type a word. Search covers section headings, terms, diagram captions, and section bodies, at every detail level.",
+  searchEmpty: "Nothing found.",
+  goto: "Go to the section →",
+  notDetermined: "not determined", partNotDetermined: "part not determined",
+  chapterWord: "Chapter ", appendixWord: "Appendix ",
+  termsTotal: n => "Terms in total: " + n + ".",
+  casesTotal: n => "Walkthroughs in total: " + n + ".",
+  warnKind: "Warning", naiveKind: "Naive solution",
+  counts: (ch, ap) => ch + (ch === 1 ? " chapter, " : " chapters, ") + ap + (ap === 1 ? " appendix" : " appendices"),
+  levelNames: { 1: "Overview", 2: "Standard", 3: "Full" },
+} : {
+  copy: "Копировать", copied: "Скопировано", copyFail: "Не удалось",
+  showMore: n => {
+    const word = (n % 10 === 1 && n % 100 !== 11) ? "строку"
+      : ([2, 3, 4].indexOf(n % 10) >= 0 && !(n % 100 >= 12 && n % 100 <= 14)) ? "строки" : "строк";
+    return "Показать листинг целиком, ещё " + n + " " + word;
+  },
+  showLess: "Свернуть листинг",
+  railStart: "Начало",
+  toastReveal: "Фрагмент относится к более подробному уровню; для этой главы он раскрыт.",
+  toastOk: "Понятно",
+  kinds: { "раздел": "раздел", "термин": "термин", "диаграмма": "диаграмма", "упоминание": "упоминание" },
+  level: "уровень ",
+  searchHint: "Введите слово. Поиск идёт по заголовкам разделов, терминам, подписям к диаграммам и содержанию разделов, независимо от выбранного уровня подробности.",
+  searchEmpty: "Ничего не найдено.",
+  goto: "Перейти к разделу →",
+  notDetermined: "не определена", partNotDetermined: "часть не определена",
+  chapterWord: "глава ", appendixWord: "приложение ",
+  termsTotal: n => "Всего терминов: " + n + ".",
+  casesTotal: n => "Всего разборов: " + n + ".",
+  warnKind: "Предупреждение", naiveKind: "Наивное решение",
+  counts: (ch, ap) => {
+    const plural = (n, one, few, many) => {
+      const a = n % 10, b = n % 100;
+      return n + " " + (a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many);
+    };
+    return plural(ch, "глава", "главы", "глав") + ", " + plural(ap, "приложение", "приложения", "приложений");
+  },
+  levelNames: { 1: "Обзор", 2: "Стандарт", 3: "Полный" },
+};
+
+/* Переключатель языка */
+const langBtn = document.getElementById("langbtn");
+langBtn.textContent = LANG === "en" ? "РУ" : "EN";
+langBtn.title = LANG === "en" ? "Читать по-русски" : "Read in English";
+langBtn.addEventListener("click", () => {
+  store.set("lang", LANG === "en" ? "ru" : "en");
+  location.reload();
+});
+
 /* ── Тема ───────────────────────────────────────────────────────────────── */
 const savedTheme = store.get("theme", "");
 if (savedTheme === "light" || savedTheme === "dark") root.setAttribute("data-theme", savedTheme);
@@ -65,7 +139,6 @@ document.getElementById("theme").addEventListener("click", () => {
 });
 
 /* ── Уровень подробности ────────────────────────────────────────────────── */
-const LEVEL_NAMES = { 1: "Обзор", 2: "Стандарт", 3: "Полный" };
 let level = parseInt(store.get("level", "2"), 10);
 if (!(level >= 1 && level <= 3)) level = 2;
 const levelBtns = Array.from(document.querySelectorAll(".seg [data-lvl]"));
@@ -78,7 +151,7 @@ function applyLevel() {
   });
   levelBtns.forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.lvl === level)));
   const narrow = document.getElementById("lvlcycle");
-  if (narrow) narrow.textContent = LEVEL_NAMES[level];
+  if (narrow) narrow.textContent = L.levelNames[level];
   document.querySelectorAll("[data-tabs]").forEach(fixTabs);
 }
 function setLevel(next) {
@@ -165,11 +238,11 @@ document.querySelectorAll("figure.code").forEach(fig => {
   let cap = fig.querySelector("figcaption");
   if (!cap) { cap = document.createElement("figcaption"); fig.insertBefore(cap, fig.firstChild); }
   const copy = document.createElement("button");
-  copy.className = "btn"; copy.type = "button"; copy.textContent = "Копировать";
+  copy.className = "btn"; copy.type = "button"; copy.textContent = L.copy;
   copy.addEventListener("click", () => {
     navigator.clipboard.writeText(fig.dataset.src).then(
-      () => { copy.textContent = "Скопировано"; setTimeout(() => copy.textContent = "Копировать", 1400); },
-      () => { copy.textContent = "Не удалось"; setTimeout(() => copy.textContent = "Копировать", 1400); });
+      () => { copy.textContent = L.copied; setTimeout(() => copy.textContent = L.copy, 1400); },
+      () => { copy.textContent = L.copyFail; setTimeout(() => copy.textContent = L.copy, 1400); });
   });
   if (!cap.querySelector(".pyver")) cap.appendChild(copy);
   else cap.insertBefore(copy, cap.querySelector(".pyver"));
@@ -178,10 +251,9 @@ document.querySelectorAll("figure.code").forEach(fig => {
     const bar = document.createElement("button");
     bar.type = "button"; bar.className = "foldbar";
     const rest = html.length - fold;
-    const word = (rest % 10 === 1 && rest % 100 !== 11) ? "строку"
-      : ([2, 3, 4].indexOf(rest % 10) >= 0 && !(rest % 100 >= 12 && rest % 100 <= 14)) ? "строки" : "строк";
-    bar.innerHTML = '<span class="more">Показать листинг целиком, ещё ' + rest + " " + word + "</span>" +
-                    '<span class="less">Свернуть листинг</span>';
+    const more = document.createElement("span"); more.className = "more"; more.textContent = L.showMore(rest);
+    const less = document.createElement("span"); less.className = "less"; less.textContent = L.showLess;
+    bar.append(more, less);
     bar.addEventListener("click", () => {
       fig.dataset.open = fig.dataset.open === "true" ? "false" : "true";
     });
@@ -228,7 +300,7 @@ document.querySelectorAll("[data-tabs]").forEach(box => {
 const rail = document.getElementById("rail");
 const sections = Array.from(main.querySelectorAll("section.chapter"));
 const chapterOf = new Map();
-let railHTML = '<h2>Начало</h2><ol>';
+let railHTML = '<h2>' + L.railStart + '</h2><ol>';
 let openGroup = true;
 
 Array.from(main.children).forEach(node => {
@@ -388,7 +460,7 @@ function showPop(target, title, body, href) {
   hidePop();
   pop = document.createElement("div");
   pop.className = "pop";
-  pop.innerHTML = '<div class="h"></div><p></p>' + (href ? '<a class="go" href="' + href + '">Перейти к разделу →</a>' : "");
+  pop.innerHTML = '<div class="h"></div><p></p>' + (href ? '<a class="go" href="' + href + '">' + L.goto + "</a>" : "");
   pop.querySelector(".h").textContent = title;
   pop.querySelector("p").textContent = body.length > 300 ? body.slice(0, 300) + "…" : body;
   document.body.appendChild(pop);
@@ -436,7 +508,8 @@ function toast(text) {
   document.querySelectorAll(".toast").forEach(t => t.remove());
   const el = document.createElement("div");
   el.className = "toast";
-  el.innerHTML = "<span></span><button type=\"button\">Понятно</button>";
+  el.innerHTML = "<span></span><button type=\"button\"></button>";
+  el.querySelector("button").textContent = L.toastOk;
   el.querySelector("span").textContent = text;
   el.querySelector("button").addEventListener("click", () => el.remove());
   document.body.appendChild(el);
@@ -451,7 +524,7 @@ function reveal(id) {
   if (!sec) return;
   sec.setAttribute("data-reveal", "");
   applyLevel();
-  toast("Фрагмент относится к более подробному уровню; для этой главы он раскрыт.");
+  toast(L.toastReveal);
 }
 addEventListener("hashchange", () => reveal(location.hash.slice(1)));
 
@@ -505,7 +578,7 @@ const dlg = document.getElementById("search"), qIn = document.getElementById("q"
 let hits = [], sel = 0;
 function runSearch() {
   const q = norm(qIn.value);
-  if (!q) { resBox.innerHTML = '<div class="empty">Введите слово. Поиск идёт по заголовкам разделов, терминам, подписям к диаграммам и содержанию разделов, независимо от выбранного уровня подробности.</div>'; hits = []; return; }
+  if (!q) { resBox.innerHTML = '<div class="empty"></div>'; resBox.querySelector('.empty').textContent = L.searchHint; hits = []; return; }
   const words = q.split(" ").filter(Boolean);
   const hasAll = (text) => text && words.every(w => text.includes(w));
   const seenIds = new Set();
@@ -517,8 +590,9 @@ function runSearch() {
   sel = 0;
   resBox.innerHTML = hits.length ? hits.map((h, i) =>
     '<a href="#' + h.id + '" class="' + (i === 0 ? "sel" : "") + '"><div class="t"></div><div class="p"><span>' +
-    h.kind + "</span><span>" + h.ch + "</span>" + (h.lvl !== "1" ? "<span>уровень " + h.lvl + "</span>" : "") + "</div></a>"
-  ).join("") : '<div class="empty">Ничего не найдено.</div>';
+    (L.kinds[h.kind] || h.kind) + "</span><span>" + h.ch + "</span>" + (h.lvl !== "1" ? "<span>" + L.level + h.lvl + "</span>" : "") + "</div></a>"
+  ).join("") : '<div class="empty"></div>';
+  if (!hits.length) resBox.querySelector(".empty").textContent = L.searchEmpty;
   resBox.querySelectorAll(".t").forEach((el, i) => el.textContent = hits[i].t);
   resBox.querySelectorAll("a").forEach((a, i) => a.addEventListener("click", () => { closeSearch(); setTimeout(() => reveal(hits[i].id), 60); }));
 }
@@ -555,7 +629,7 @@ document.getElementById("printbtn").addEventListener("click", () => {
   const chapter = currentChapter;
   const part = partOf(chapter);
   const title = el => {
-    if (!el) return "не определена";
+    if (!el) return L.notDetermined;
     const h = el.querySelector(".chead h2") || el.querySelector("h2");
     const n = h && h.querySelector(".num");
     return h ? h.textContent.replace(n ? n.textContent : "", "").trim() : "";
@@ -566,14 +640,9 @@ document.getElementById("printbtn").addEventListener("click", () => {
       const all = Array.from(document.querySelectorAll("section.chapter"));
       const numbered = all.filter(x => /^\d+$/.test((x.querySelector(".chead .num") || {}).textContent || ""));
       const apps = all.filter(x => x.id.startsWith("app-"));
-      const plural = (n, one, few, many) => {
-        const a = n % 10, b = n % 100;
-        return n + " " + (a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many);
-      };
-      el.textContent = plural(numbered.length, "глава", "главы", "глав") + ", " +
-                       plural(apps.length, "приложение", "приложения", "приложений");
+      el.textContent = L.counts(numbered.length, apps.length);
     }
-    if (kind === "part") el.textContent = part ? title(part) : "часть не определена";
+    if (kind === "part") el.textContent = part ? title(part) : L.partNotDetermined;
     if (kind === "chapter") el.textContent = title(chapter);
   });
   pdlg.querySelector('input[name="plvl"][value="' + level + '"]').checked = true;
@@ -688,7 +757,7 @@ function whereLink(el, targetId) {
   const a = document.createElement("a");
   a.className = "where";
   a.href = "#" + (targetId || (lab ? lab.id : ""));
-  const kind = lab && lab.num.length > 2 ? "" : (lab && /^[A-D]$/.test(lab.num) ? "приложение " : "глава ");
+  const kind = lab && lab.num.length > 2 ? "" : (lab && /^[A-E]$/.test(lab.num) ? L.appendixWord : L.chapterWord);
   a.textContent = lab ? kind + lab.num + ". " + lab.title : "";
   if (lab) a.setAttribute("data-secref", lab.num);
   return a;
@@ -698,7 +767,7 @@ function whereLink(el, targetId) {
   const host = document.getElementById("glossary");
   if (!host) return;
   const items = Array.from(defs.values())
-    .sort((a, b) => a.title.localeCompare(b.title, "ru"));
+    .sort((a, b) => a.title.localeCompare(b.title, LANG));
   for (const item of items) {
     const source = document.getElementById(item.id);
     const box = document.createElement("div");
@@ -722,7 +791,7 @@ function whereLink(el, targetId) {
   }
   const count = document.createElement("p");
   count.className = "where";
-  count.textContent = "Всего терминов: " + items.length + ".";
+  count.textContent = L.termsTotal(items.length);
   host.appendChild(count);
 })();
 
@@ -735,15 +804,16 @@ function whereLink(el, targetId) {
     if (el.closest("#app-d")) return;
     if (!el.id) el.id = "warn-" + (++n);
     const b = el.querySelector("b");
-    const kind = b ? b.textContent.trim() : "Предупреждение";
+    const kind = b ? b.textContent.trim() : L.warnKind;
     const text = el.textContent.replace(b ? b.textContent : "", "").trim();
     rows.push({ kind: kind, text: text, el: el, id: el.id });
   });
   document.querySelectorAll('main [data-tabs] [role="tabpanel"]').forEach(panel => {
-    if (panel.getAttribute("data-title") !== "Наивно") return;
+    const naiveTitle = LANG === "en" ? "Naive" : "Наивно";
+    if (panel.getAttribute("data-title") !== naiveTitle) return;
     if (!panel.id) panel.id = "naive-" + (++n);
     const p = panel.querySelector("p");
-    rows.push({ kind: "Наивное решение", text: p ? p.textContent.trim() : "", el: panel, id: panel.id });
+    rows.push({ kind: L.naiveKind, text: p ? p.textContent.trim() : "", el: panel, id: panel.id });
   });
   rows.sort((a, b) => {
     const la = chapterLabel(a.el), lb = chapterLabel(b.el);
@@ -767,7 +837,7 @@ function whereLink(el, targetId) {
   host.appendChild(list);
   const count = document.createElement("p");
   count.className = "where";
-  count.textContent = "Всего разборов: " + rows.length + ".";
+  count.textContent = L.casesTotal(rows.length);
   host.appendChild(count);
 })();
 

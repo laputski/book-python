@@ -1,3 +1,5 @@
+from typing import Self
+
 from pydantic import BaseModel, Field, model_validator
 
 class Extraction(BaseModel):
@@ -7,7 +9,7 @@ class Extraction(BaseModel):
     quote: str | None = Field(default=None, description="дословная выдержка")
 
     @model_validator(mode="after")
-    def coherent(self) -> "Extraction":
+    def coherent(self) -> Self:
         if self.found and not (self.value and self.quote):
             raise ValueError("при found=true требуются значение и выдержка")
         if not self.found and (self.value or self.quote):

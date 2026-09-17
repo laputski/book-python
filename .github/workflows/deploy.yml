@@ -1,4 +1,4 @@
-# Deploy the book to GitHub Pages (book.ragworld.org).
+# Deploy the book to GitHub Pages (python.ragworld.org).
 # Runs on pushes to main and when called from other workflows (the data auto-update).
 name: deploy
 
@@ -44,10 +44,10 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Bind the book.ragworld.org domain
+      - name: Bind the python.ragworld.org domain
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api -X PUT "repos/${{ github.repository }}/pages" \
-            -f cname=book.ragworld.org || echo "the domain will bind once the DNS record exists"
+            -f cname=python.ragworld.org || echo "the domain will bind once the DNS record exists"
         continue-on-error: true

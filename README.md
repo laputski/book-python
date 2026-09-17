@@ -10,12 +10,12 @@ hybrid, graph, adaptive, and agentic retrieval systems stand on.**
 [![ci](https://github.com/laputski/book-python/actions/workflows/ci.yml/badge.svg)](https://github.com/laputski/book-python/actions/workflows/ci.yml)
 [![deploy](https://github.com/laputski/book-python/actions/workflows/deploy.yml/badge.svg)](https://github.com/laputski/book-python/actions/workflows/deploy.yml)
 [![weekly](https://github.com/laputski/book-python/actions/workflows/weekly.yml/badge.svg)](https://github.com/laputski/book-python/actions/workflows/weekly.yml)
-[![site](https://img.shields.io/badge/read-book.ragworld.org-0072B2)](https://book.ragworld.org)
-[![python](https://img.shields.io/badge/python-3.13%20%7C%203.14-3776AB?logo=python&logoColor=white)](https://book.ragworld.org)
-[![languages](https://img.shields.io/badge/languages-EN%20%7C%20RU-555)](https://book.ragworld.org)
+[![site](https://img.shields.io/badge/read-python.ragworld.org-0072B2)](https://python.ragworld.org)
+[![python](https://img.shields.io/badge/python-3.13%20%7C%203.14-3776AB?logo=python&logoColor=white)](https://python.ragworld.org)
+[![languages](https://img.shields.io/badge/languages-EN%20%7C%20RU-555)](https://python.ragworld.org)
 [![data](https://img.shields.io/badge/registry%20data-CC%20BY%204.0-97CA00)](https://ragworld.org)
 
-**[Read it at book.ragworld.org →](https://book.ragworld.org)**
+**[Read it at python.ragworld.org →](https://python.ragworld.org)**
 
 *Читайте документацию репозитория по-русски: [README.ru.md](README.ru.md)*
 
@@ -58,7 +58,7 @@ Preview: `python3 -m http.server 8731`, then open
 ## Deployment
 
 GitHub Pages, deployed by `.github/workflows/deploy.yml` on every push to
-`main`. The `book.ragworld.org` domain is bound automatically by the same
+`main`. The `python.ragworld.org` domain is bound automatically by the same
 workflow; on the DNS side a single CNAME record `book → laputski.github.io`
 is required. Enforce HTTPS in Settings → Pages once the certificate is issued.
 

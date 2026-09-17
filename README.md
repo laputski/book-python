@@ -58,9 +58,11 @@ Preview: `python3 -m http.server 8731`, then open
 ## Deployment
 
 GitHub Pages, deployed by `.github/workflows/deploy.yml` on every push to
-`main`. The `python.ragworld.org` domain is bound automatically by the same
-workflow; on the DNS side a single CNAME record `book → laputski.github.io`
-is required. Enforce HTTPS in Settings → Pages once the certificate is issued.
+`main`. The custom domain is set by hand in Settings → Pages and is not
+touched by the workflow, whose token lacks the administrator rights the Pages
+API asks for. On the DNS side a single CNAME record
+`python → laputski.github.io` is required. Enforce HTTPS in Settings → Pages
+once the certificate is issued.
 
 ## Self-updating
 

@@ -51,9 +51,10 @@ python3 tools/check_drift.py   # сверка с реестром, версия�
 ## Деплой
 
 GitHub Pages, деплой workflow-ом `.github/workflows/deploy.yml` на каждый
-пуш в `main`. Домен `python.ragworld.org` привязывается автоматически тем же
-workflow-ом; на стороне DNS нужна одна запись CNAME
-`book → laputski.github.io`. Принудительный HTTPS включается в
+пуш в `main`. Домен задаётся вручную в Settings → Pages и workflow-ом не
+трогается: его токену не хватает прав администратора, которых требует
+Pages API. На стороне DNS нужна одна запись CNAME
+`python → laputski.github.io`. Принудительный HTTPS включается в
 Settings → Pages после выпуска сертификата.
 
 ## Самообновление

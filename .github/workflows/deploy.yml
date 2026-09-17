@@ -1,4 +1,8 @@
 # Deploy the book to GitHub Pages (python.ragworld.org).
+# The custom domain lives in Settings -> Pages and is set by hand. The workflow
+# token cannot change it: the Pages API asks the caller to be a repository
+# administrator, and a CNAME file in the artifact is ignored for Actions-based
+# publishing. Changing the domain therefore means editing that field and this file.
 # Runs on pushes to main and when called from other workflows (the data auto-update).
 name: deploy
 
@@ -43,11 +47,3 @@ jobs:
 
       - id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Bind the python.ragworld.org domain
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api -X PUT "repos/${{ github.repository }}/pages" \
-            -f cname=python.ragworld.org || echo "the domain will bind once the DNS record exists"
-        continue-on-error: true

@@ -1,39 +1,186 @@
 {
-  "_comment": "What the book claims about registry records. Compared against data/registry_meta.json by the drift detector. kind=anchor marks a chapter's anchor record (rule: level L2 and above); kind=illustration marks a mention with an explicitly stated level.",
-  "claims": {
-    "standard_hybridrag": {"level": "L2", "kind": "anchor", "chapters": [1, 5, 11]},
-    "naive_dense":        {"level": "L2", "kind": "anchor", "chapters": [2]},
-    "bm25_sparse":        {"level": "L2", "kind": "anchor", "chapters": [2]},
-    "pathrag":            {"level": "L2", "kind": "anchor", "chapters": [2, 7, 12]},
-    "colbert":            {"level": "L2", "kind": "anchor", "chapters": [2, 11]},
-    "contextual_retrieval": {"level": "L2", "kind": "anchor", "chapters": [3]},
-    "raptor":             {"level": "L2", "kind": "anchor", "chapters": [4]},
-    "hyde":               {"level": "L2", "kind": "anchor", "chapters": [5, 8]},
-    "flare":              {"level": "L2", "kind": "anchor", "chapters": [6]},
-    "qdrant":             {"level": "L2", "kind": "anchor", "chapters": [7]},
-    "react":              {"level": "L2", "kind": "anchor", "chapters": [9]},
-    "colpali":            {"level": "L2", "kind": "anchor", "chapters": [10, 11]},
-    "replug":             {"level": "L2", "kind": "anchor", "chapters": [8, 11]},
-    "msft_graphrag":      {"level": "L5", "kind": "anchor", "chapters": [12]},
-    "hipporag":           {"level": "L4", "kind": "anchor", "chapters": [12]},
-    "kag":                {"level": "L2", "kind": "anchor", "chapters": [12]},
-    "adaptive_rag":       {"level": "L2", "kind": "anchor", "chapters": [13]},
-    "self_rag":           {"level": "L2", "kind": "anchor", "chapters": [13]},
-    "ircot":              {"level": "L2", "kind": "anchor", "chapters": [13]},
-    "speculative_rag":    {"level": "L2", "kind": "anchor", "chapters": [14]},
-    "poison_rag":         {"level": "L2", "kind": "anchor", "chapters": [15]},
-    "opensearch":         {"level": "L2", "kind": "anchor", "chapters": ["B"]},
-    "late_chunking":      {"level": "L1", "kind": "illustration", "chapters": [4]},
-    "vectorless":         {"level": "L0", "kind": "illustration", "chapters": [4]},
-    "rag_fusion":         {"level": "L0", "kind": "illustration", "chapters": [5]},
-    "bge_m3":             {"level": "L0", "kind": "illustration", "chapters": [10, "B"]},
-    "edgerag":            {"level": "L1", "kind": "illustration", "chapters": [10, 15]},
-    "lightrag":           {"level": "L0", "kind": "illustration", "chapters": [12]},
-    "think_on_graph":     {"level": "L1", "kind": "illustration", "chapters": [12]},
-    "crag":               {"level": "L1", "kind": "illustration", "chapters": [13]},
-    "dspy":               {"level": "L1", "kind": "illustration", "chapters": [14, "B"]},
-    "poisonedrag":        {"level": "L1", "kind": "illustration", "chapters": [15]}
+ "_comment": "What the book claims about registry records, and only what it actually states in the text. Compared against data/registry_meta.json by the drift detector. kind=anchor marks a chapter's anchor record (rule: level L2 and above); kind=illustration marks a mention with an explicitly stated level. A record the book never names does not belong here: it would raise drift no edit can answer.",
+ "claims": {
+  "standard_hybridrag": {
+   "level": "L2",
+   "kind": "anchor",
+   "chapters": [
+    1,
+    5,
+    11
+   ]
   },
-  "python_baseline": "3.13",
-  "python_mentioned_max": "3.14"
+  "naive_dense": {
+   "level": "L2",
+   "kind": "anchor",
+   "chapters": [
+    2
+   ]
+  },
+  "bm25_sparse": {
+   "level": "L2",
+   "kind": "anchor",
+   "chapters": [
+    2
+   ]
+  },
+  "pathrag": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    2,
+    7,
+    12
+   ]
+  },
+  "colbert": {
+   "level": "L4",
+   "kind": "anchor",
+   "chapters": [
+    2,
+    11
+   ]
+  },
+  "contextual_retrieval": {
+   "level": "L2",
+   "kind": "anchor",
+   "chapters": [
+    3
+   ]
+  },
+  "raptor": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    4
+   ]
+  },
+  "hyde": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    5,
+    8
+   ]
+  },
+  "flare": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    6
+   ]
+  },
+  "qdrant": {
+   "level": "L5",
+   "kind": "anchor",
+   "chapters": [
+    7
+   ]
+  },
+  "react": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    9
+   ]
+  },
+  "colpali": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    10,
+    11
+   ]
+  },
+  "replug": {
+   "level": "L2",
+   "kind": "anchor",
+   "chapters": [
+    8,
+    11
+   ]
+  },
+  "msft_graphrag": {
+   "level": "L5",
+   "kind": "anchor",
+   "chapters": [
+    12
+   ]
+  },
+  "hipporag": {
+   "level": "L4",
+   "kind": "anchor",
+   "chapters": [
+    12
+   ]
+  },
+  "adaptive_rag": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    13
+   ]
+  },
+  "self_rag": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    13
+   ]
+  },
+  "speculative_rag": {
+   "level": "L2",
+   "kind": "anchor",
+   "chapters": [
+    14
+   ]
+  },
+  "poison_rag": {
+   "level": "L3",
+   "kind": "anchor",
+   "chapters": [
+    15
+   ]
+  },
+  "opensearch": {
+   "level": "L5",
+   "kind": "anchor",
+   "chapters": [
+    "B"
+   ]
+  },
+  "late_chunking": {
+   "level": "L1",
+   "kind": "illustration",
+   "chapters": [
+    4
+   ]
+  },
+  "bge_m3": {
+   "level": "L0",
+   "kind": "illustration",
+   "chapters": [
+    10,
+    "B"
+   ]
+  },
+  "edgerag": {
+   "level": "L1",
+   "kind": "illustration",
+   "chapters": [
+    10,
+    15
+   ]
+  },
+  "dspy": {
+   "level": "L1",
+   "kind": "illustration",
+   "chapters": [
+    14,
+    "B"
+   ]
+  }
+ },
+ "python_baseline": "3.13",
+ "python_mentioned_max": "3.14"
 }

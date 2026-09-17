@@ -1056,7 +1056,7 @@ def account(label: str):
 
 <h3 id="s-2-1"><span class="num">2.1</span>Задача: четыре способа извлечения, один вызывающий код</h3>
 
-<p>Реестр описывает извлечение измерением <span class="tag">C1</span>, у которого есть шесть значений: поиск ближайших соседей, лексический поиск, обход графа, булев запрос, навигация по дереву, пространственный запрос. Четыре записи уровня <span class="lvl">L2</span> занимают четыре разные точки этого измерения.</p>
+<p>Реестр описывает извлечение измерением <span class="tag">C1</span>, у которого есть шесть значений: поиск ближайших соседей, лексический поиск, обход графа, булев запрос, навигация по дереву, пространственный запрос. Четыре записи уровня <span class="lvl">L2</span> и выше занимают четыре разные точки этого измерения.</p>
 
 <div class="tw"><table>
 <thead><tr><th>Запись</th><th>Представление <span class="tag">A5</span></th><th>Операция <span class="tag">C1</span></th><th>Что она возвращает по существу</th></tr></thead>
@@ -1816,7 +1816,7 @@ class Chunk:
 
 <div class="rec">
   <span class="name">RAPTOR</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">A2=semantic</span>
   <span class="tag">A4=tree</span>
   <span class="tag">C1=tree_navigation</span>
@@ -2191,7 +2191,7 @@ def resumable(paths: list[str], cursor: Path) -> Iterator[tuple[str, str]]:
   <span class="lvl">L2</span>
   <span class="tag">C3=rrf</span>
   <span class="name">HyDE</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">B1=hyde</span>
   <span>по реестру RAG World</span>
 </div>
@@ -2555,7 +2555,7 @@ async def commit_safely(tx: Transaction) -> None:
 
 <div class="rec">
   <span class="name">FLARE</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">C2=iterative_stopping</span>
   <span class="tag">E2=decoding_trigger</span>
   <span class="tag">E5=mutual_loop</span>
@@ -2955,9 +2955,9 @@ async def with_keepalive(source: AsyncGenerator[str, None],
 
 <div class="rec">
   <span class="name">Qdrant</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L5</span>
   <span class="name">PathRAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">A4=graph</span>
   <span class="tag">D1=path_pruning</span>
   <span>по реестру RAG World</span>
@@ -3325,7 +3325,7 @@ class Pool[C: Closeable]:
 
 <div class="rec">
   <span class="name">HyDE</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">B1=hyde</span>
   <span class="tag">E5=generation_seeds</span>
   <span>по реестру RAG World</span>
@@ -3707,7 +3707,7 @@ class CacheStats:
 
 <div class="rec">
   <span class="name">ReAct</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">C2=agentic_open_loop</span>
   <span class="tag">E5=mutual_loop</span>
   <span>по реестру RAG World</span>
@@ -4053,7 +4053,7 @@ class SearchTool(Registered, Traced, name="search", traced=True):
 
 <div class="rec">
   <span class="name">ColPali</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">A5=vision_language</span>
   <span class="tag">A7=image</span>
   <span>по реестру RAG World</span>
@@ -4592,7 +4592,7 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
 
 <div class="rec">
   <span class="name">ColBERT</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L4</span>
   <span class="tag">A5=dense_multi_late_interaction</span>
   <span>по реестру RAG World</span>
 </div>
@@ -4768,7 +4768,7 @@ def maxsim_batch(query: np.ndarray, flat: np.ndarray,
   <span class="name">HippoRAG</span>
   <span class="lvl">L4</span>
   <span class="name">PathRAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">D1=path_pruning</span>
   <span>по реестру RAG World</span>
 </div>
@@ -5125,11 +5125,11 @@ def personalized_rank(adjacency: csr_matrix, seeds: np.ndarray,
 
 <div class="rec">
   <span class="name">Adaptive RAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">B2=trained_classifier</span>
   <span class="tag">C2=iterative_stopping</span>
   <span class="name">Self-RAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">E2=decoding_reflection</span>
   <span>по реестру RAG World</span>
 </div>
@@ -5854,7 +5854,7 @@ class Extraction(BaseModel):
 
 <div class="rec">
   <span class="name">Poison RAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span>атака на извлекаемый корпус, по реестру RAG World</span>
 </div>
 
@@ -6442,8 +6442,8 @@ def test_context_fencing(payload: str) -> None:
 <div class="tw"><table>
 <thead><tr><th>Средство</th><th>Отличительное свойство</th><th>Когда уместно</th></tr></thead>
 <tbody>
-<tr><td>Qdrant <span class="lvl">L2</span></td><td>Фильтрация по метаданным наравне с векторным поиском; квантование на стороне хранилища</td><td>Поиск, где отбор по полям столь же важен, как близость</td></tr>
-<tr><td>OpenSearch <span class="lvl">L2</span></td><td>Лексический и векторный поиск в одном хранилище</td><td>Гибридный поиск без сопровождения двух систем</td></tr>
+<tr><td>Qdrant <span class="lvl">L5</span></td><td>Фильтрация по метаданным наравне с векторным поиском; квантование на стороне хранилища</td><td>Поиск, где отбор по полям столь же важен, как близость</td></tr>
+<tr><td>OpenSearch <span class="lvl">L5</span></td><td>Лексический и векторный поиск в одном хранилище</td><td>Гибридный поиск без сопровождения двух систем</td></tr>
 <tr><td><code>pgvector</code></td><td>Векторный поиск внутри реляционной базы</td><td>Умеренные объёмы; ценность согласованности с прочими данными выше скорости</td></tr>
 <tr><td><code>faiss</code></td><td>Библиотека приближённого поиска, встраиваемая в процесс</td><td>Индекс помещается в память; сетевое обращение нежелательно</td></tr>
 <tr><td><code>rank_bm25</code></td><td>Лексическое ранжирование на чистом Python</td><td>Прототип и небольшой корпус; на больших уступает поисковому движку</td></tr>
@@ -6455,8 +6455,8 @@ def test_context_fencing(payload: str) -> None:
 <thead><tr><th>Средство</th><th>Отличительное свойство</th><th>Когда уместно</th></tr></thead>
 <tbody>
 <tr><td><code>sentence-transformers</code></td><td>Единый интерфейс к моделям представлений и к переранжировщикам</td><td>Локальное вычисление представлений</td></tr>
-<tr><td>ColBERT <span class="lvl">L2</span></td><td>Позднее взаимодействие: набор векторов вместо одного</td><td>Переоценка отобранной верхушки, где важны точные соответствия</td></tr>
-<tr><td>ColPali <span class="lvl">L2</span></td><td>Представление страницы как изображения, без разбора разметки</td><td>Документы со сложной вёрсткой: таблицы, чертежи, формы</td></tr>
+<tr><td>ColBERT <span class="lvl">L4</span></td><td>Позднее взаимодействие: набор векторов вместо одного</td><td>Переоценка отобранной верхушки, где важны точные соответствия</td></tr>
+<tr><td>ColPali <span class="lvl">L3</span></td><td>Представление страницы как изображения, без разбора разметки</td><td>Документы со сложной вёрсткой: таблицы, чертежи, формы</td></tr>
 <tr><td>BGE-M3 <span class="lvl">L0</span></td><td>Плотное, разреженное и многовекторное представление одной моделью</td><td>Иллюстрация подхода; уровень зрелости ниже опорного</td></tr>
 </tbody></table></div>
 
@@ -7162,7 +7162,7 @@ def account(label: str):
 
 <h3 id="s-2-1"><span class="num">2.1</span>The Task: Four Ways to Retrieve, One Calling Side</h3>
 
-<p>The registry describes retrieval by dimension <span class="tag">C1</span>, which has six values: nearest-neighbour search, lexical search, graph traversal, boolean query, tree navigation, spatial query. Four records of level <span class="lvl">L2</span> occupy four different points of that dimension.</p>
+<p>The registry describes retrieval by dimension <span class="tag">C1</span>, which has six values: nearest-neighbour search, lexical search, graph traversal, boolean query, tree navigation, spatial query. Four records of level <span class="lvl">L2</span> or above occupy four different points of that dimension.</p>
 
 <div class="tw"><table>
 <thead><tr><th>Record</th><th>Representation <span class="tag">A5</span></th><th>Operator <span class="tag">C1</span></th><th>What it essentially returns</th></tr></thead>
@@ -7922,7 +7922,7 @@ class Chunk:
 
 <div class="rec">
   <span class="name">RAPTOR</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">A2=semantic</span>
   <span class="tag">A4=tree</span>
   <span class="tag">C1=tree_navigation</span>
@@ -8297,7 +8297,7 @@ def resumable(paths: list[str], cursor: Path) -> Iterator[tuple[str, str]]:
   <span class="lvl">L2</span>
   <span class="tag">C3=rrf</span>
   <span class="name">HyDE</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">B1=hyde</span>
   <span>per the RAG World registry</span>
 </div>
@@ -8661,7 +8661,7 @@ async def commit_safely(tx: Transaction) -> None:
 
 <div class="rec">
   <span class="name">FLARE</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">C2=iterative_stopping</span>
   <span class="tag">E2=decoding_trigger</span>
   <span class="tag">E5=mutual_loop</span>
@@ -9061,9 +9061,9 @@ async def with_keepalive(source: AsyncGenerator[str, None],
 
 <div class="rec">
   <span class="name">Qdrant</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L5</span>
   <span class="name">PathRAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">A4=graph</span>
   <span class="tag">D1=path_pruning</span>
   <span>per the RAG World registry</span>
@@ -9431,7 +9431,7 @@ class Pool[C: Closeable]:
 
 <div class="rec">
   <span class="name">HyDE</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">B1=hyde</span>
   <span class="tag">E5=generation_seeds</span>
   <span>per the RAG World registry</span>
@@ -9813,7 +9813,7 @@ class CacheStats:
 
 <div class="rec">
   <span class="name">ReAct</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">C2=agentic_open_loop</span>
   <span class="tag">E5=mutual_loop</span>
   <span>per the RAG World registry</span>
@@ -10159,7 +10159,7 @@ class SearchTool(Registered, Traced, name="search", traced=True):
 
 <div class="rec">
   <span class="name">ColPali</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">A5=vision_language</span>
   <span class="tag">A7=image</span>
   <span>per the RAG World registry</span>
@@ -10698,7 +10698,7 @@ def reciprocal_rank_fusion(rankings: Sequence[Sequence[Scored]], k: int,
 
 <div class="rec">
   <span class="name">ColBERT</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L4</span>
   <span class="tag">A5=dense_multi_late_interaction</span>
   <span>per the RAG World registry</span>
 </div>
@@ -10874,7 +10874,7 @@ def maxsim_batch(query: np.ndarray, flat: np.ndarray,
   <span class="name">HippoRAG</span>
   <span class="lvl">L4</span>
   <span class="name">PathRAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">D1=path_pruning</span>
   <span>per the RAG World registry</span>
 </div>
@@ -11231,11 +11231,11 @@ def personalized_rank(adjacency: csr_matrix, seeds: np.ndarray,
 
 <div class="rec">
   <span class="name">Adaptive RAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">B2=trained_classifier</span>
   <span class="tag">C2=iterative_stopping</span>
   <span class="name">Self-RAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span class="tag">E2=decoding_reflection</span>
   <span>per the RAG World registry</span>
 </div>
@@ -11960,7 +11960,7 @@ class Extraction(BaseModel):
 
 <div class="rec">
   <span class="name">Poison RAG</span>
-  <span class="lvl">L2</span>
+  <span class="lvl">L3</span>
   <span>an attack on the retrieved corpus, per the RAG World registry</span>
 </div>
 
@@ -12548,8 +12548,8 @@ def test_context_fencing(payload: str) -> None:
 <div class="tw"><table>
 <thead><tr><th>Tool</th><th>Distinctive property</th><th>When it fits</th></tr></thead>
 <tbody>
-<tr><td>Qdrant <span class="lvl">L2</span></td><td>Metadata filtering on a par with vector search; store-side quantization</td><td>Search where field filters matter as much as similarity</td></tr>
-<tr><td>OpenSearch <span class="lvl">L2</span></td><td>Lexical and vector search in one store</td><td>Hybrid search without operating two systems</td></tr>
+<tr><td>Qdrant <span class="lvl">L5</span></td><td>Metadata filtering on a par with vector search; store-side quantization</td><td>Search where field filters matter as much as similarity</td></tr>
+<tr><td>OpenSearch <span class="lvl">L5</span></td><td>Lexical and vector search in one store</td><td>Hybrid search without operating two systems</td></tr>
 <tr><td><code>pgvector</code></td><td>Vector search inside a relational database</td><td>Moderate volumes; consistency with other data outweighs speed</td></tr>
 <tr><td><code>faiss</code></td><td>An in-process approximate search library</td><td>The index fits in memory; a network round trip is unwelcome</td></tr>
 <tr><td><code>rank_bm25</code></td><td>Lexical ranking in pure Python</td><td>Prototypes and small corpora; a search engine outdoes it at scale</td></tr>
@@ -12561,8 +12561,8 @@ def test_context_fencing(payload: str) -> None:
 <thead><tr><th>Tool</th><th>Distinctive property</th><th>When it fits</th></tr></thead>
 <tbody>
 <tr><td><code>sentence-transformers</code></td><td>One interface to embedding models and rerankers</td><td>Computing embeddings locally</td></tr>
-<tr><td>ColBERT <span class="lvl">L2</span></td><td>Late interaction: a vector set instead of one vector</td><td>Rescoring a selected top where exact matches matter</td></tr>
-<tr><td>ColPali <span class="lvl">L2</span></td><td>Pages represented as images, no markup parsing</td><td>Documents with intricate layout: tables, drawings, forms</td></tr>
+<tr><td>ColBERT <span class="lvl">L4</span></td><td>Late interaction: a vector set instead of one vector</td><td>Rescoring a selected top where exact matches matter</td></tr>
+<tr><td>ColPali <span class="lvl">L3</span></td><td>Pages represented as images, no markup parsing</td><td>Documents with intricate layout: tables, drawings, forms</td></tr>
 <tr><td>BGE-M3 <span class="lvl">L0</span></td><td>Dense, sparse, and multi-vector output from one model</td><td>An illustration of the approach; below the anchor maturity level</td></tr>
 </tbody></table></div>
 

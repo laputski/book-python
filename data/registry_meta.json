@@ -1,5 +1,5 @@
 {
- "built_at": "2026-10-26",
+ "built_at": "2026-11-02",
  "count": 76,
  "levels": {
   "adaptive_rag": "L3",
@@ -73,7 +73,7 @@
   "streaming_rag": "L1",
   "test_time": "L3",
   "think_on_graph": "L1",
-  "uembed": "L1",
+  "uembed": "L2",
   "unified": "L1",
   "vectorless": "L0",
   "voicemem": "L1",

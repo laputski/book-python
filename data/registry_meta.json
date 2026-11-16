@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-09",
+ "built_at": "2026-11-16",
  "count": 76,
  "levels": {
   "adaptive_rag": "L3",
@@ -15,7 +15,7 @@
   "colbert": "L4",
   "colpali": "L3",
   "contextual_retrieval": "L2",
-  "crag": "L1",
+  "crag": "L2",
   "dense_x_retrieval": "L3",
   "dspy": "L1",
   "edge": "L1",
